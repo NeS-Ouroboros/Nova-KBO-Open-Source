@@ -291,16 +291,19 @@ Gui, main:add, Text, x650 y110 w200 vActionOnLSD c%TextColor% +Hidden, Nach LSD 
 Gui, main:add, Edit, x850 y110 w300 h30 vActionOnLSDText -VScroll +Hidden, %ActionOnLSDText%
 
 
-Gui, main:add, Text, x230 y410 h30 vLSDOverlayText c%TextColor% +Hidden, `t`tX:`nLSD Overlay:`n`t`tY:
-Gui, main:add, Edit, x350 y400 h30 w60 vLSDOverlayX +Hidden +Number, %LSDOverlayX%
-Gui, main:add, Edit, x350 y440 h30 w60 vLSDOverlayY +Hidden +Number, %LSDOverlayY%
+Gui, main:add, Text, x730 y410 h30 vLSDOverlayText c%TextColor% +Hidden, `t`tX:`nLSD Overlay:`n`t`tY:
+Gui, main:add, Edit, x850 y400 h30 w60 vLSDOverlayX +Hidden +Number, %LSDOverlayX%
+Gui, main:add, Edit, x850 y440 h30 w60 vLSDOverlayY +Hidden +Number, %LSDOverlayY%
 
-Gui, main:add, Text, x470 y410 h30 vCarOverlayText c%TextColor% +Hidden, `t`tX:`nCarheal Overlay:`n`t`tY:
-Gui, main:add, Edit, x590 y400 h30 w60 vCarOverlayX +Hidden +Number, %CarOverlayX%
-Gui, main:add, Edit, x590 y440 h30 w60 vCarOverlayY +Hidden +Number, %CarOverlayY%
+Gui, main:add, Text, x970 y410 h30 vCarOverlayText c%TextColor% +Hidden, `t`tX:`nCarheal Overlay:`n`t`tY:
+Gui, main:add, Edit, x1090 y400 h30 w60 vCarOverlayX +Hidden +Number, %CarOverlayX%
+Gui, main:add, Edit, x1090 y440 h30 w60 vCarOverlayY +Hidden +Number, %CarOverlayY%
 
 Gui, main:add, Text, x700 y360 h30 w260 vHotkeyToggleText c%TextColor% +Hidden, Keybinder ein- / ausschalten
 Gui, main:add, Hotkey, x950 y360 h30 w60 vHotkeyToggle -VScroll +Hidden, %HotkeyToggle%
+
+Gui, main:add, CheckBox, x230 y410 vAutoSwitchGun Checked%AutoSwitchGun% c%TextColor% +Hidden, Automatisches Swapgun
+Gui, main:add, CheckBox, x230 y460 vActivePremium Checked%ActivePremium% c%TextColor% +Hidden, Aktives Premium
 
 elements["einstellungen"].Push("MouseText1")
 elements["einstellungen"].Push("MouseText2")
@@ -329,6 +332,8 @@ elements["einstellungen"].Push("CarOverlayX")
 elements["einstellungen"].Push("CarOverlayY")
 elements["einstellungen"].Push("HotkeyToggleText")
 elements["einstellungen"].Push("HotkeyToggle")
+elements["einstellungen"].Push("AutoSwitchGun")
+elements["einstellungen"].Push("ActivePremium")
 
 
 
@@ -689,7 +694,27 @@ if(EnableAPI) {
 		CarhealOverlayCreated := 0
 		}
 	}
-
+if(EnableAPI && AutoSwitchGun && IsPlayerInAnyVehicle() && IsPlayerPassenger() && GetPlayerWeaponID() = 0) {
+	Sleep, 1000
+	if(GetPlayerWeaponID() = 0 && IsVehicleCar() || GetPlayerWeaponID() = 0 && IsVehicleBike()) {
+		if(HasWeaponIDClip("31") && GetPlayerWeaponTotalClip("5") > 50 && ActivePremium) {
+			DownTicks := 2
+			} else if(HasWeaponIDClip("30") && GetPlayerWeaponTotalClip("5") > 50 && ActivePremium) {
+			DownTicks := 3
+			} else if(HasWeaponIDClip("29") && GetPlayerWeaponTotalClip("4") > 50) {
+			DownTicks := 1
+			} else {
+			DownTicks := 0
+			}
+		if(DownTicks) {
+			KBOSend("/swapgun")
+			sleep, 500
+			SendInput, {Down %DownTicks%}{enter}
+			while(GetPlayerWeaponID() = 0)
+				sleep, 100
+			}
+		}
+	}
 return
 
 ChatLabel:
@@ -873,13 +898,6 @@ if(RegStr(ChatOutput, "Du hast die Gebühren wegen Falschparkens bezahlt und kan
 if(CarLocked && IsPlayerDriver() = 0)
 	CarLocked := 0
 
-return
-
-:?:t/Test::
-Suspend, Permit
-sleep, 200
-KBOSend("/echo WaffenID: " GetPlayerWeaponID())
-Hotkey, enter, on
 return
 
 :?:t/vs::
@@ -1178,6 +1196,9 @@ LoadIni() {
 	if(HotkeyToggle = "ERROR")
 		HotkeyToggle := ""
 	
+	IniRead, ActivePremium, %inipath%, Einstellungen, ActivePremium, 0
+	IniRead, AutoSwitchGun, %inipath%, Einstellungen, AutoSwitchGun, 0
+	
 	Loop, 3
 		{
 		IniRead, StartUpProg%A_Index%, %inipath%, Einstellungen, StartUpProg%A_Index%, 0
@@ -1240,6 +1261,9 @@ SaveIni() {
 	IniWrite, %LSDOverlayY%, %inipath%, Einstellungen, LSDOverlayY
 	
 	IniWrite, %HotkeyToggle%, %inipath%, Einstellungen, HotkeyToggle
+	
+	IniWrite, %ActivePremium%, %inipath%, Einstellungen, ActivePremium
+	IniWrite, %AutoSwitchGun%, %inipath%, Einstellungen, AutoSwitchGun
 	
 	Loop, 3
 		{
