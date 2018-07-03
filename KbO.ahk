@@ -79,7 +79,7 @@ global Frak_Name := {1: "San Andreas Police Department", 2: "Federal Bureau of I
 global Frak_RegEx := ["PD|Police|Polizei|LS|Los Santos|Bullen|Cops", "F\.?B\.?I\.?|Federal|Bureau|Investigation|Sniper","", "Krankenhaus|SA:?RD|Rettungsdienst|Arzt|Ärzte|Medic", "LCN|La Cosa Nostra|Cosa|Nostra", "Yakuza|YKZ|Yaki|Eis", "Regierung|Government|Gov|DMV|Motor|Fahrschule|Schule|Führerschein","", "SAM ?AG|Media|News|^SAM|Reporter|Ouro|nikk", "", "Aztec|Varrios|Scarfo|Racing|Auto|Car|Rifa|VLA","", "Ballas|Front Yard|Purple|Ice|PIB|Pokee", "GS|Grove Street|Grove","","","", "Shanghai|Syndikat|China|Triaden|Triad|Jiro", "Los|Vagos|Latino"]
 global chatlogpath := A_MyDocuments "\GTA San Andreas User Files\SAMP\chatlog.txt"
 global oCars := ["Landstalker", "Bravura", "Buttalo", "Linerunner", "Perennial", "Sentinel", "Dumper", "Firetruck", "Trashmaster", "Stretch", "Manana", "Infernus", "Voodoo", "Pony", "Mule", "Cheetah", "Ambulance", "Leviathan", "Moonbeam", "Esperanto", "Taxi", "Washington", "Bobcat", "Mr. Whoopee", "BF Injection", "Hunter", "Premier", "Enforcer", "Securicar", "Banshee", "Predator", "Bus", "PANZAH", "Barracks", "Hotknife", "Trailer", "Previon", "Coach", "Cabbie", "Stallion", "Rumpo", "RC Bandit", "Romero", "Packer", "Monster", "Admiral", "Squallo", "Seasparrow", "Pizzaboii", "Tram", "Trailer", "Turismo", "Speeder", "Reefer", "Tropic", "Flatbed", "Yankee", "Ich hab Cojones", "Solari", "Barkley's RC", "Skimmer", "PCJ-600", "Faggio", "Freeway", "RC Baron", "RC Raider", "Glendale", "Oceanic", "Sanchez", "Sparrow", "Patriot", "Quad", "Coastguard", "Dinghy", "Hermes", "Sabre", "Rustler", "ZR-350", "Walton", "Regina", "Comet", "BMX", "Burrito", "Mutterschiff", "Marquis", "Baggage", "Dozer", "Maverick", "News Heli", "Rancher", "FBI Rancher", "Virgo", "Greenwood", "Jetmax", "Hotring Ranger", "Sandking", "Blista Compact", "Police Heli", "Boxville", "Benson", "Mesa", "RC Goblin", "Hotring Racer A", "Hotring Racer B", "Bloodring Banger", "Rancher Lure", "Super GT", "Elegant", "Journey", "Bike", "Mountain Bike", "Beagle", "Cropduster", "Stuntplane", "Tanker", "Roadtrain", "Nebula", "Majestic", "Buccaneer", "Shamal", "Hydra", "FCR-900", "NRG-500", "HPV1000", "Cement Truck", "TowTruck", "Fortune", "Cadrona", "FBI Truck", "Willard", "Forklift", "Tractor", "Combine Harvester", "Fletzer", "Remington", "Slamvan", "Blade", "Train", "Train", "Vortex", "Vincent", "Bullet", "Clover", "Sadler", "Firetruck LA", "Hustler", "Intruder", "Primo", "Cargobob", "Tampa", "Sunrise", "Merit", "Utility Van", "Nevada", "Yosemite", "Windsor", "Monster A", "Monster B", "Uranus", "Jester", "Sultan", "Stratum", "Elegy", "Raindance", "RC Tiger", "Flash", "Tahoma", "Savanna", "Bandito", "Train Trailer", "Train Trailer", "Kart", "Mower", "Dune", "Sweeper", "Broadway", "Tornado", "AT400", "DFT-30", "Huntley", "Stafford", "BF-400", "Newsvan", "Tug", "Trailer", "Emperor", "Wayfarer", "Euros", "Hotdog", "Club", "Train Trailer", "Trailer", "Andromada", "Dodo", "RC Cam", "Launch", "LSPD-Car", "SFPD-Car", "LVPD-Car", "Police Ranger", "Picador", "S.W.A.T.", "Alpha", "Phoenix", "Glendale", "Sadler", "Baggage Trailer", "Baggage Trailer", "Tug Trailer", "Boxville", "Combine Gear", "Utility Trailer"]
-global WeaponList := ["Faust", "Schlagring", "Golfschläger", "Schlagstock", "Messer", "Baseballschläger", "Schaufel", "Pool Stock", "Katana", "Kettensäge", "Doppeldildo", "Dildo", "Langer Vibrator", "Kurzer Vibrator", "Blumen", "Gehstock", "Granate", "Tränengas", "Molotiv Cocktail", "", "", "", "9mm", "Schallgedämpfte 9mm", "Deagle", "Schrotflinte", "Abgesägte Schrotflinte", "Automatische Schrotflinte", "SMG", "MP5", "AK-47", "M4", "Tec-9", "Jägergewehr", "Scharfschützengewehr", "RPG", "Hitzesuchende Rakete", "Flammenwerfer", "Minigun", "Fernzünder", "Fernzünder", "Spray", "Feuerlöscher", "Kamera", "Nachtsichtgerät", "Thermalgerät", "Fallschirm", "Fake Pistol", "Fahrzeug", "Rotor", "Explosion", "Ertrunken", "Schwerkraft"]
+global WeaponList := ["Faust", "Schlagring", "Golfschläger", "Schlagstock", "Schlitzer", "Baseballschläger", "Schaufel", "Pool Stock", "Katana", "Kettensäge", "Doppelpenetrator", "Penetrator", "Langer Vibrator", "Kurzer Vibrator", "Blumen", "Gehstock", "Granate", "Tränengas", "Molotiv Cocktail", "", "", "", "9mm", "Schallgedämpfte 9mm", "Deagle", "Schrotflinte", "Abgesägte Schrotflinte", "Automatische Schrotflinte", "SMG", "MP5", "AK-47", "M4", "Tec-9", "Jägdgewehr", "Scharfschützengewehr", "RPG", "Hitzesuchende Rakete", "HANZ GET ZE FLAMMENWERFER", "RATATATAT", "Fernzünder", "Fernzünder", "Spray", "Feuerlöscher", "Kamera", "Nachtsichtgerät", "Thermalgerät", "Fallschirm", "Fake Pistol", "Fahrzeug", "Rotor", "Explosion", "Ertrunken", "Schwerkraft"]
 global EnableAPI
 global DefaultAPI := 1
 global CurrentChatCount := GetChatLineCount()
@@ -114,6 +114,11 @@ global TextSize := {Label: "36", normal: "12", Desc: "20"}
 global KillbinderTitelName := "Killbinder by Ouro R2"
 global GuiMaxH := 500
 global GuiMaxW := 1200
+global BigMapX := 570
+global BigMapY := 295
+global BigMapCrop := 12
+global SkinPosX := 770
+global SkinPosY := 380
 
 global currentGUI := "Killbinds"
 global elements := {killbinds: [], keybinds: [], frakbinds: [], autonom: [], informationen: [], einstellungen: [], login: []}
@@ -256,7 +261,7 @@ Loop, %AnzKillbinds%
 
 font(TextSize["normal"])
 InfoText11 := "Variablen:`n[GKills]`tGesamte Kills`n[GDeaths]`tGesamte Tode`n[GKD]`t`tGesamte KD`n[DKills]`tTägliche Kills`n[DDeaths]`tTägliche Tode`n[DKD]`t`tTägliche KD`n[Weapon]`tAktuelle Waffe`n"
-InfoText12 := "`n/setvs`t`tLegt den Chat für /vs fest`n/vs`t`tSendet eine Nachfrage nach Verstärkung`n/hwd`t`tAutomatisches Housewithdraw`n/GetCont`tAbfrage über gespeicherte Plantagen etc`n/GetPlant`tAbfrage über gespeicherte Plantagen etc`n/SetKills`tSetzt die GDeaths`n/SetDeaths`tSetzt die GDeaths"
+InfoText12 := "`n/setvs`t`tLegt den Chat für /vs fest`n/vs`t`tSendet eine Nachfrage nach Verstärkung`n/hwd`t`tAutomatisches Housewithdraw`n/GetCont`tAbfrage über gespeicherte Plantagen etc`n/GetPlant`tAbfrage über gespeicherte Plantagen etc`n/SetKills`tSetzt die GDeaths`n/SetDeaths`tSetzt die GDeaths`n/DebugVisual`tEntfernt alle aktuellen Overlays`n/cls`t`tSpammt den Chat Clientseitig"
 Gui, main:add, Text, x230 y110 w450 vInfoText1 c%SecondColor% +Hidden, %InfoText11%%InfoText12%
 InfoText21 := "`n[Zone]`t`tAktuelle Zone`n[City]`t`tAktuelles Stadtgebiet`n[Vehicle]`tAktuelles Fahrzeug!!`n[Screen]`tMacht einen Screen mit F8`n[WaitXXXX]`tWartet XXXX-Millisekunden`n[Streak]`tAktulle Streak`n"
 InfoText22 := "`n/api`t`tDe-/aktiviert die API`nDoppel M`t/mv /oldmv /towopen`n/DefMoney`tAm ATM das Bargeld festsetzen`n/Playerdata`tWie Playerinfo`n/Frakdata`tÜberprüft wer von einer Fraktion online ist`n/FrakdataID`tGibt die Mitglieder der Fraktion mit /id wieder"
@@ -510,8 +515,26 @@ IfExist, temp.ini
 		IniRead, FrakbindText%A_Index%, Temp.ini, Frakbinds, FrakbindText%A_Index%, 0
 		if(!FrakbindText%A_Index%)
 			FrakbindText%A_Index% := ""
-		if(InStr(FrakbindText%A_Index%, "[S_GS_1]")) {
-			StringReplace, FrakbindText%A_Index%, FrakbindText%A_Index%, [S_GS_1], ×, All
+		if(InStr(FrakbindText%A_Index%, "[S1]")) {
+			StringReplace, FrakbindText%A_Index%, FrakbindText%A_Index%, [S1], ×, All
+			}
+		if(InStr(FrakbindText%A_Index%, "[oe]", 1)) {
+			StringReplace, FrakbindText%A_Index%, FrakbindText%A_Index%, [oe], ö, All
+			}
+		if(InStr(FrakbindText%A_Index%, "[ae]", 1)) {
+			StringReplace, FrakbindText%A_Index%, FrakbindText%A_Index%, [ae], ä, All
+			}
+		if(InStr(FrakbindText%A_Index%, "[ue]", 1)) {
+			StringReplace, FrakbindText%A_Index%, FrakbindText%A_Index%, [ue], ü, All
+			}
+		if(InStr(FrakbindText%A_Index%, "[Ue]", 1)) {
+			StringReplace, FrakbindText%A_Index%, FrakbindText%A_Index%, [Oe], Ö, All
+			}
+		if(InStr(FrakbindText%A_Index%, "[Ae]", 1)) {
+			StringReplace, FrakbindText%A_Index%, FrakbindText%A_Index%, [Ae], Ä, All
+			}
+		if(InStr(FrakbindText%A_Index%, "[Ue]", 1)) {
+			StringReplace, FrakbindText%A_Index%, FrakbindText%A_Index%, [Ue], Ü, All
 			}
 		}
 	FileDelete, Temp.ini
@@ -559,6 +582,15 @@ Loop, %AnzFrakbinds%
 	}
 
 changeTab("killbinds")
+
+FlagBizName := {9: "BSN Tankstelle", 10: "Grove Street Tankstelle", 11: "Truckstop Tankstelle", 12: "Dillimore Tankstelle", 13: "SF Bahnhof Tankstelle", 14: "SFPD Tankstelle", 15: "SF Carshop Tankstelle", 16: "Prison Tankstelle", 17: "Angel Pine Tankstelle", 21: "Tankstelle Bayside"}
+FlagBiz1 := {9: ["", "", "Angel Pine Tankstelle"], 10: ["", "", "LV Arena"], 11: ["", "", "Prison Tankstelle"], 12: ["", "", "Angel Pine Holzhütte"], 13: ["", "", "Staudamm"], 14: ["", "", "Ehemalige FBI Base"], 15: ["", "", "Flugzeugfriedhof"], 16: ["", "", "Alte Fahrschule"], 17: ["", "", "SF Airport Landebahn"], 21: ["", "", "Baustelle SF Bahnhof"]}
+FlagBiz2 := {9: ["", "", "LV Baseballstadion"], 10: ["", "", "San Fierro Kraftwerk"], 11: ["", "", "Catalinas Hütte"], 12: ["", "", "Basketballplatz Rock Hotel"], 13: ["", "", "LS Airport"], 14: ["", "", "Bayside Heli-Plattform"], 15: ["", "", "LV Fort Carson Steg"], 16: ["", "", "East LS Strand"], 17: ["", "", "El Quebrados"], 21: ["", "", "Holzhütte an der Farm"]}
+FlagBiz3 := {9: ["", "", "Kuh-Gebiet"], 10: ["", "", "Fort Carson"], 11: ["", "", "Hütte über SF Tunnel"], 12: ["", "", "Bayside Campingplatz"], 13: ["", "", "Palomino Creek OC"], 14: ["", "", "Ehemalige KF Base"], 15: ["", "", "Aussichtsplattform weißes Haus"], 16: ["", "", "SF Airport Hangar"], 17: ["", "", "Erzmine"], 21: ["", "", "Montgomery"]}
+
+
+
+
 return
 
 mainGuiClose:
@@ -697,11 +729,13 @@ if(EnableAPI) {
 if(EnableAPI && AutoSwitchGun && IsPlayerInAnyVehicle() && IsPlayerPassenger() && GetPlayerWeaponID() = 0) {
 	Sleep, 1000
 	if(GetPlayerWeaponID() = 0 && IsVehicleCar() || GetPlayerWeaponID() = 0 && IsVehicleBike()) {
-		if(HasWeaponIDClip("31") && GetPlayerWeaponTotalClip("5") > 50 && ActivePremium) {
+		GetPlayerWeaponName("5", AutoWeapon1, 255)
+		GetPlayerWeaponName("4", AutoWeapon2, 255)
+		if(AutoWeapon1 = "M4" && GetPlayerWeaponTotalClip("5") > 50 && ActivePremium) {
 			DownTicks := 2
-			} else if(HasWeaponIDClip("30") && GetPlayerWeaponTotalClip("5") > 50 && ActivePremium) {
+			} else if(AutoWeapon1 = "AK-47" && GetPlayerWeaponTotalClip("5") > 50 && ActivePremium) {
 			DownTicks := 3
-			} else if(HasWeaponIDClip("29") && GetPlayerWeaponTotalClip("4") > 50) {
+			} else if(AutoWeapon2 = "MP5" && GetPlayerWeaponTotalClip("4") > 50) {
 			DownTicks := 1
 			} else {
 			DownTicks := 0
@@ -738,7 +772,7 @@ if(RegStr(ChatOutput, "SERVER: Willkommen ")) {
 	IniWrite, %UserName%, %inipath%, Settings, UserName
 	}
 	
-if(RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Vorsätzlicher Mord ). Reporter: Anonym.") || RegStr(ChatOutput, "SERVER: Du hast gerade einen Mord begangen. Achtung!") || RegStr(ChatOutput, "GANGWAR: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CASINO-EROBERUNG: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CRACKFESTUNG: Du hast einen Feind ausgeschaltet.")) {
+if(RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Vorsätzlicher Mord ). Reporter: Anonym.") || RegStr(ChatOutput, "SERVER: Du hast gerade einen Mord begangen. Achtung!") || RegStr(ChatOutput, "GANGWAR: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CASINO-EROBERUNG: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CRACKFESTUNG: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Fahrerflucht ). Reporter: Anonym.")) {
 	if(!EnableKillbinds)
 		return
 	SaveIni()
@@ -784,15 +818,15 @@ if(RegStr(ChatOutput, "AGENTUR: Du hast den Auftrag an ", " erfüllt (Verdienst 
 	Pos := RegExMatch(ChatOutput, "Ui)Auftrag an (.*) erfüllt", HitCon_Name)
 	HitCon_Name := SubStr(HitCon_Name, 12, -8)
 	}
-	
+
 if(RegStr(ChatOutput, "<< Ein Auftragskiller hat ein Mitglied", "getötet. Übrig: ", ">>") || RegStr(ChatOutput, "* Achtung: Auf dieser Fraktion liegt kein Gruppenauftrag mehr! *")) {
 	DisableKilltrigger := 1
 	}
-	
+
 if(RegStr(ChatOutput, "HQ: Gute Arbeit Agent", "Ihre Entlohnung von", "wird Ihnen zum Zahltag gutgeschrieben.")) {
 	DisableKilltrigger := 1
 	}
-	
+
 if(HitCon_Name && RegStr(ChatOutput, "Screenshot Taken - sa-mp-", ".png")) {
 	Pos := RegExMatch(ChatOutput, "Ui)sa-mp-\d+\.png", ScreenName)
 	FormatTime, ScreenDate,, yyyy.MM.dd
@@ -801,7 +835,7 @@ if(HitCon_Name && RegStr(ChatOutput, "Screenshot Taken - sa-mp-", ".png")) {
 	FileCopy, %A_MyDocuments%\GTA San Andreas User Files\SAMP\screens\%ScreenName%, %A_MyDocuments%\GTA San Andreas User Files\SAMP\screens\%NewScreenName%
 	HitCon_Name := ""
 	}
-	
+
 if(RegStr(ChatOutput, "Du hast LSD Pillen eingenommen (+150HP für wenige Sekunden).")) {
 	LSDIndex := 0
 	SetTimer, LSDTime, 1000
@@ -819,22 +853,22 @@ if(RegStr(ChatOutput, "UNTERGRUND: Das Starten der LSD-Produktion hat den Einflu
 	KbOPlayerPos(NewPositions)
 	Fam := BoboRequest(UserName, UserPass, "AddObject", NewPositions[3], NewPositions[4], "1")
 	}
-	
+
 if(RegStr(ChatOutput, "INFO: ", "hat eine Hawaiian Green Plantage angelegt.", UserName) && LoginState) {
 	KbOPlayerPos(NewPositions)
 	Fam := BoboRequest(UserName, UserPass, "AddObject", NewPositions[3], NewPositions[4], "2")
 	}
-	
+
 if(RegStr(ChatOutput, "INFO: ", "hat eine Acapulco Gold Plantage angelegt.", UserName) && LoginState) {
 	KbOPlayerPos(NewPositions)
 	Fam := BoboRequest(UserName, UserPass, "AddObject", NewPositions[3], NewPositions[4], "3")
 	}
-	
+
 if(RegStr(ChatOutput, "UNTERGRUND: Das Gießen der Plantage hat den Einfluss deiner Fraktion im Untergrund steigen lassen") && LoginState) {
 	KbOPlayerPos(NewPositions)
 	Fam := BoboRequest(UserName, UserPass, "AddCare", NewPositions[3], NewPositions[4], "1")
 	}
-	
+
 if(RegStr(ChatOutput, "UNTERGRUND: Das Düngen der Plantage hat den Einfluss deiner Fraktion im Untergrund steigen lassen") && LoginState) {
 	KbOPlayerPos(NewPositions)
 	Fam := BoboRequest(UserName, UserPass, "AddCare", NewPositions[3], NewPositions[4], "2")
@@ -895,7 +929,7 @@ if(RegStr(ChatOutput, "SERVICE: Du hast die Gebühren in Höhe von ", " bezahlt 
 	CarLocked := 0
 if(RegStr(ChatOutput, "Du hast die Gebühren wegen Falschparkens bezahlt und kannst nun wieder fahren.") && EnableAPI && IsPlayerDriver())
 	CarLocked := 0
-if(CarLocked && IsPlayerDriver() = 0)
+if(CarLocked && IsPlayerDriver() = 0 && EnableAPI)
 	CarLocked := 0
 
 return
@@ -915,6 +949,18 @@ if(vsChat) {
 	IniWrite, %vsChat%, %inipath%, Settings, vsChat
 	KBOSend("/echo Verstärkung wird nun den den ""/" vsChat """-Chat gerufen")
 	}
+Hotkey, enter, on
+return
+
+:?:t/CLS::
+Suspend, Permit
+Sleep, 200
+ClearChat := ""
+FileReadLine, PageSize, %A_MyDocuments%\GTA San Andreas User Files\SAMP\sa-mp.cfg, 6
+Pos := RegExMatch(PageSize, "\d+$", PageSize)
+Loop, %PageSize%
+	ClearChat .= "/echo ¯\_(-_-)_/¯~"
+KBOSend(ClearChat)
 Hotkey, enter, on
 return
 
