@@ -63,7 +63,6 @@ IfNotExist, %A_AppData%\Bobo
 	}
 SetWorkingDir %A_AppData%\Bobo
 
-;~ StringCaseSense, On
 global SoundInfo := "*-1"
 global SoundWarn := "*16"
 global Frak_Typ := {1: "Staat", 2: "Staat", 4: "Staat", 5: "Mafia", 6: "Mafia", 7: "Staat", 9: "Neutral", 11: "Gang", 13: "Gang", 14: "Gang",18: "Mafia", 19: "Gang"}
@@ -80,6 +79,7 @@ global Frak_Name := {1: "San Andreas Police Department", 2: "Federal Bureau of I
 global Frak_RegEx := ["PD|Police|Polizei|LS|Los Santos|Bullen|Cops", "F\.?B\.?I\.?|Federal|Bureau|Investigation|Sniper","", "Krankenhaus|SA:?RD|Rettungsdienst|Arzt|Ärzte|Medic", "LCN|La Cosa Nostra|Cosa|Nostra", "Yakuza|YKZ|Yaki|Eis", "Regierung|Government|Gov|DMV|Motor|Fahrschule|Schule|Führerschein","", "SAM ?AG|Media|News|^SAM|Reporter|Ouro|nikk", "", "Aztec|Varrios|Scarfo|Racing|Auto|Car|Rifa|VLA","", "Ballas|Front Yard|Purple|Ice|PIB|Pokee", "GS|Grove Street|Grove","","","", "Shanghai|Syndikat|China|Triaden|Triad|Jiro", "Los|Vagos|Latino"]
 global chatlogpath := A_MyDocuments "\GTA San Andreas User Files\SAMP\chatlog.txt"
 global oCars := ["Landstalker", "Bravura", "Buttalo", "Linerunner", "Perennial", "Sentinel", "Dumper", "Firetruck", "Trashmaster", "Stretch", "Manana", "Infernus", "Voodoo", "Pony", "Mule", "Cheetah", "Ambulance", "Leviathan", "Moonbeam", "Esperanto", "Taxi", "Washington", "Bobcat", "Mr. Whoopee", "BF Injection", "Hunter", "Premier", "Enforcer", "Securicar", "Banshee", "Predator", "Bus", "PANZAH", "Barracks", "Hotknife", "Trailer", "Previon", "Coach", "Cabbie", "Stallion", "Rumpo", "RC Bandit", "Romero", "Packer", "Monster", "Admiral", "Squallo", "Seasparrow", "Pizzaboii", "Tram", "Trailer", "Turismo", "Speeder", "Reefer", "Tropic", "Flatbed", "Yankee", "Ich hab Cojones", "Solari", "Barkley's RC", "Skimmer", "PCJ-600", "Faggio", "Freeway", "RC Baron", "RC Raider", "Glendale", "Oceanic", "Sanchez", "Sparrow", "Patriot", "Quad", "Coastguard", "Dinghy", "Hermes", "Sabre", "Rustler", "ZR-350", "Walton", "Regina", "Comet", "BMX", "Burrito", "Mutterschiff", "Marquis", "Baggage", "Dozer", "Maverick", "News Heli", "Rancher", "FBI Rancher", "Virgo", "Greenwood", "Jetmax", "Hotring Ranger", "Sandking", "Blista Compact", "Police Heli", "Boxville", "Benson", "Mesa", "RC Goblin", "Hotring Racer A", "Hotring Racer B", "Bloodring Banger", "Rancher Lure", "Super GT", "Elegant", "Journey", "Bike", "Mountain Bike", "Beagle", "Cropduster", "Stuntplane", "Tanker", "Roadtrain", "Nebula", "Majestic", "Buccaneer", "Shamal", "Hydra", "FCR-900", "NRG-500", "HPV1000", "Cement Truck", "TowTruck", "Fortune", "Cadrona", "FBI Truck", "Willard", "Forklift", "Tractor", "Combine Harvester", "Fletzer", "Remington", "Slamvan", "Blade", "Train", "Train", "Vortex", "Vincent", "Bullet", "Clover", "Sadler", "Firetruck LA", "Hustler", "Intruder", "Primo", "Cargobob", "Tampa", "Sunrise", "Merit", "Utility Van", "Nevada", "Yosemite", "Windsor", "Monster A", "Monster B", "Uranus", "Jester", "Sultan", "Stratum", "Elegy", "Raindance", "RC Tiger", "Flash", "Tahoma", "Savanna", "Bandito", "Train Trailer", "Train Trailer", "Kart", "Mower", "Dune", "Sweeper", "Broadway", "Tornado", "AT400", "DFT-30", "Huntley", "Stafford", "BF-400", "Newsvan", "Tug", "Trailer", "Emperor", "Wayfarer", "Euros", "Hotdog", "Club", "Train Trailer", "Trailer", "Andromada", "Dodo", "RC Cam", "Launch", "LSPD-Car", "SFPD-Car", "LVPD-Car", "Police Ranger", "Picador", "S.W.A.T.", "Alpha", "Phoenix", "Glendale", "Sadler", "Baggage Trailer", "Baggage Trailer", "Tug Trailer", "Boxville", "Combine Gear", "Utility Trailer"]
+global WeaponList := ["Faust", "Schlagring", "Golfschläger", "Schlagstock", "Messer", "Baseballschläger", "Schaufel", "Pool Stock", "Katana", "Kettensäge", "Doppeldildo", "Dildo", "Langer Vibrator", "Kurzer Vibrator", "Blumen", "Gehstock", "Granate", "Tränengas", "Molotiv Cocktail", "", "", "", "9mm", "Schallgedämpfte 9mm", "Deagle", "Schrotflinte", "Abgesägte Schrotflinte", "Automatische Schrotflinte", "SMG", "MP5", "AK-47", "M4", "Tec-9", "Jägergewehr", "Scharfschützengewehr", "RPG", "Hitzesuchende Rakete", "Flammenwerfer", "Minigun", "Fernzünder", "Fernzünder", "Spray", "Feuerlöscher", "Kamera", "Nachtsichtgerät", "Thermalgerät", "Fallschirm", "Fake Pistol", "Fahrzeug", "Rotor", "Explosion", "Ertrunken", "Schwerkraft"]
 global EnableAPI
 global DefaultAPI := 1
 global CurrentChatCount := GetChatLineCount()
@@ -255,7 +255,7 @@ Loop, %AnzKillbinds%
 	}
 
 font(TextSize["normal"])
-InfoText11 := "Variablen:`n[GKills]`tGesamte Kills`n[GDeaths]`tGesamte Tode`n[GKD]`t`tGesamte KD`n[DKills]`tTägliche Kills`n[DDeaths]`tTägliche Tode`n[DKD]`t`tTägliche KD`n"
+InfoText11 := "Variablen:`n[GKills]`tGesamte Kills`n[GDeaths]`tGesamte Tode`n[GKD]`t`tGesamte KD`n[DKills]`tTägliche Kills`n[DDeaths]`tTägliche Tode`n[DKD]`t`tTägliche KD`n[Weapon]`tAktuelle Waffe`n"
 InfoText12 := "`n/setvs`t`tLegt den Chat für /vs fest`n/vs`t`tSendet eine Nachfrage nach Verstärkung`n/hwd`t`tAutomatisches Housewithdraw`n/GetCont`tAbfrage über gespeicherte Plantagen etc`n/GetPlant`tAbfrage über gespeicherte Plantagen etc`n/SetKills`tSetzt die GDeaths`n/SetDeaths`tSetzt die GDeaths"
 Gui, main:add, Text, x230 y110 w450 vInfoText1 c%SecondColor% +Hidden, %InfoText11%%InfoText12%
 InfoText21 := "`n[Zone]`t`tAktuelle Zone`n[City]`t`tAktuelles Stadtgebiet`n[Vehicle]`tAktuelles Fahrzeug!!`n[Screen]`tMacht einen Screen mit F8`n[WaitXXXX]`tWartet XXXX-Millisekunden`n[Streak]`tAktulle Streak`n"
@@ -299,6 +299,9 @@ Gui, main:add, Text, x470 y410 h30 vCarOverlayText c%TextColor% +Hidden, `t`tX:`
 Gui, main:add, Edit, x590 y400 h30 w60 vCarOverlayX +Hidden +Number, %CarOverlayX%
 Gui, main:add, Edit, x590 y440 h30 w60 vCarOverlayY +Hidden +Number, %CarOverlayY%
 
+Gui, main:add, Text, x700 y360 h30 w260 vHotkeyToggleText c%TextColor% +Hidden, Keybinder ein- / ausschalten
+Gui, main:add, Hotkey, x950 y360 h30 w60 vHotkeyToggle -VScroll +Hidden, %HotkeyToggle%
+
 elements["einstellungen"].Push("MouseText1")
 elements["einstellungen"].Push("MouseText2")
 elements["einstellungen"].Push("MouseButton1")
@@ -324,9 +327,24 @@ elements["einstellungen"].Push("LSDOverlayY")
 elements["einstellungen"].Push("CarOverlayText")
 elements["einstellungen"].Push("CarOverlayX")
 elements["einstellungen"].Push("CarOverlayY")
+elements["einstellungen"].Push("HotkeyToggleText")
+elements["einstellungen"].Push("HotkeyToggle")
 
 
 
+return
+
+Label_ToggleKey:
+Suspend, Permit
+if(A_IsSuspended) {
+	KBOSend("/echo Keybinder wird nun {00ff00}aktiviert{ffffff}.")
+	ForceSuspend := 0
+	Suspend, Off
+	} else {
+	KBOSend("/echo Keybinder wird nun {ff0000}deaktiviert{ffffff}.")
+	ForceSuspend := 1
+	Suspend, On
+	}
 return
 
 Label_for_all_Hotkeys:
@@ -370,6 +388,8 @@ if(currentGUI = "Einstellungen") {
 		Hotkey, XButton1, Label_for_all_Hotkeys, off
 	if(MouseButton2)
 		Hotkey, XButton2, Label_for_all_Hotkeys, off
+	if(HotkeyToggle)
+		Hotkey, %HotkeyToggle%, Label_ToggleKey, off
 	}
 if(currentGUI = "Frakbinds") {
 	Loop, %AnzFrakbinds%
@@ -394,6 +414,8 @@ if(currentGUI = "Einstellungen") {
 		Hotkey, XButton1, Label_for_all_Hotkeys, on
 	if(MouseButton2)
 		Hotkey, XButton2, Label_for_all_Hotkeys, on
+	if(HotkeyToggle)
+		Hotkey, %HotkeyToggle%, Label_ToggleKey, on
 	}
 if(currentGUI = "Frakbinds") {
 	Loop, %AnzFrakbinds%
@@ -537,10 +559,8 @@ return
 mainGuiClose:
 mainGuiEscape:
 SaveIni()
-if(CarhealOverlayCreate)
-	TextDestroy(CarhealOverlay)
-if(LSDOverlayCreate)
-	TextDestroy(LSDOverlay)
+if(EnableAPI)
+	DestroyAllVisual()
 ExitApp
 return
 
@@ -549,7 +569,8 @@ Hotkey, Escape, Off
 
 +T::
 ~t::
-Suspend On
+if(!ForceSuspend)
+	Suspend On
 Hotkey, Enter, On
 Hotkey, Escape, On
 Hotkey, t, Off
@@ -557,7 +578,8 @@ return
 
 ~Enter::
 Suspend Permit
-Suspend Off
+if(!ForceSuspend)
+	Suspend Off
 Hotkey, t, On
 Hotkey, Enter, Off
 Hotkey, Escape, Off
@@ -565,7 +587,8 @@ return
 
 ~Escape::
 Suspend Permit
-Suspend Off
+if(!ForceSuspend)
+	Suspend Off
 Hotkey, t, On
 Hotkey, Enter, Off
 Hotkey, Escape, Off
@@ -593,7 +616,6 @@ if(EnableAPI && IsPlayerDriver()) {
 	if(AutoEnableLights && IsVehicleLightEnabled()) {
 		KBOSend("/cveh licht")
 		}
-	;~ sleep, 1500
 	CarLocked := 1
 	}
 return
@@ -700,8 +722,6 @@ if(RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Vorsätzlicher Mord ). 
 	StreakKills += 1
 	GesamteKills += 1
 	TaeglicheKills += 1
-	GesamteKD := CalcKD(GesamteKills, GesamteDeaths)
-	TaeglicheKD := CalcKD(TaeglicheKills, TaeglicheDeaths)
 	
 	if(DisableKilltrigger > 0) {
 		DisableKilltrigger -= 1
@@ -766,7 +786,7 @@ if(RegStr(ChatOutput, "Du hast LSD Pillen eingenommen (+150HP für wenige Sekund
 		}
 	}
 if(RegStr(ChatOutput, "Der LSD Rausch ist nun vorbei und die Nebenwirkung tritt ein (15HP)!") && ActionOnLSDText) {
-	ActionOnLSDText := RegExReplace(ActionOnLSDText, "i)\/use\s\w+\b")
+	ActionOnLSDText := RegExReplace(ActionOnLSDText, "i)\/use\b")
 	KBOSend(ActionOnLSDText)
 	}
 
@@ -855,6 +875,13 @@ if(CarLocked && IsPlayerDriver() = 0)
 
 return
 
+:?:t/Test::
+Suspend, Permit
+sleep, 200
+KBOSend("/echo WaffenID: " GetPlayerWeaponID())
+Hotkey, enter, on
+return
+
 :?:t/vs::
 Suspend, Permit
 sleep, 200
@@ -888,6 +915,7 @@ Sleep, 200
 Eingabeaufforderung(NewKills, "Ich habe so viele Morde: ")
 if(NewKills)
 	IniWrite, %NewKills%, %inipath%, Kills, GesamteKills
+LoadIni()
 Hotkey, enter, on
 return
 
@@ -897,6 +925,7 @@ sleep, 200
 Eingabeaufforderung(NewDeaths, "Ich bin so oft gestorben: ")
 if(NewDeaths)
 	IniWrite, %NewDeaths%, %inipath%, Kills, GesamteDeaths
+LoadIni()
 Hotkey, enter, on
 return
 
@@ -924,8 +953,24 @@ return
 Suspend, Permit
 sleep, 200
 Eingabeaufforderung(varSetMoney, "Wie viel Geld möchtest du auf der Hand haben: ")
-if(varSetMoney)
-	KBOSend("/oldstats")
+if(EnableAPI) {
+	NewMoney := GetPlayerMoney()
+	KBOSend("/bankmenu")
+	sleep, 200
+	if(NewMoney > varSetMoney) {
+		SendInput, {enter}
+		varNewMoney := NewMoney - varSetMoney
+		} else {
+		SendInput, {esc}
+		varNewMoney := varSetMoney - NewMoney
+		}
+		sleep, 200
+		SendInput, %varNewMoney%{enter}
+	varSetMoney := ""
+	} else {
+	if(varSetMoney)
+		KBOSend("/oldstats")
+	}
 Hotkey, enter, on
 return
 
@@ -1129,6 +1174,10 @@ LoadIni() {
 	IniRead, LSDOverlayX, %inipath%, Einstellungen, LSDOverlayX, 180
 	IniRead, LSDOverlayY, %inipath%, Einstellungen, LSDOverlayY, 460
 	
+	IniRead, HotkeyToggle, %inipath%, Einstellungen, HotkeyToggle, ERROR
+	if(HotkeyToggle = "ERROR")
+		HotkeyToggle := ""
+	
 	Loop, 3
 		{
 		IniRead, StartUpProg%A_Index%, %inipath%, Einstellungen, StartUpProg%A_Index%, 0
@@ -1189,6 +1238,8 @@ SaveIni() {
 	IniWrite, %CarOverlayY%, %inipath%, Einstellungen, CarOverlayY
 	IniWrite, %LSDOverlayX%, %inipath%, Einstellungen, LSDOverlayX
 	IniWrite, %LSDOverlayY%, %inipath%, Einstellungen, LSDOverlayY
+	
+	IniWrite, %HotkeyToggle%, %inipath%, Einstellungen, HotkeyToggle
 	
 	Loop, 3
 		{
