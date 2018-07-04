@@ -2,6 +2,8 @@
 #UseHook
 #SingleInstance, Force
 #Persistent
+#HotString EndChars `n
+FileEncoding, CP65001
 
 If Not A_IsAdmin {
 	Run *RunAs %A_ScriptFullPath%
@@ -114,14 +116,15 @@ global TextSize := {Label: "36", normal: "12", Desc: "20"}
 global KillbinderTitelName := "Killbinder by Ouro R2"
 global GuiMaxH := 500
 global GuiMaxW := 1200
-global BigMapX := 570
-global BigMapY := 295
+global BigMapX
+global BigMapY
 global BigMapCrop := 12
-global SkinPosX := 770
-global SkinPosY := 380
+global SkinPosX
+global SkinPosY
+global DialogIndex := 13296
 
 global currentGUI := "Killbinds"
-global elements := {killbinds: [], keybinds: [], frakbinds: [], autonom: [], informationen: [], einstellungen: [], login: []}
+global elements := {killbinds: [], keybinds: [], frakbinds: [], autonom: [], informationen: [], einstellungen: [], login: [], einstellungen2: []}
 
 SetTimer, ChatLabel, 100
 SetTimer, Settings, 500
@@ -197,6 +200,7 @@ AutonomDesc := "Hier können Autonome Keybinds eingetragen werden. Auf der linke
 InformationDesc := "Hier stehen Informationen zum " KillbinderTitelName "`n`nVersion: " aVersion
 FrakbindDesc := "Der Inhalt der Frakbinds werden von den Leadern über die Homepage eingestellt. Hier kann man dann die gewünschten Hotkeys zum Senden eintragen."
 EinstellungenDesc := "Some Random I/O Stuff`n`nWenn die Funktion nicht benötigt wird, das Textfeld einfach leer lassen."
+Einstellungen2Desc := "#ComingSoon"
 
 Gui, main:add, Text, x230 y10 h80 w960 vKillbindDesc c%TextColor% +Hidden, %KillbindDesc%
 elements["killbinds"].Push("KillbindDesc")
@@ -210,6 +214,8 @@ Gui, main:add, Text, x230 y10 h80 w960 vFrakbindDesc c%TextColor% +Hidden, %Frak
 elements["frakbinds"].Push("FrakbindDesc")
 Gui, main:add, Text, x230 y10 h80 w960 vEinstellungenDesc c%TextColor% +Hidden, %EinstellungenDesc%
 elements["einstellungen"].Push("EinstellungenDesc")
+Gui, main:add, Text, x230 y10 h80 w960 vEinstellungen2Desc c%TextColor% +Hidden, %Einstellungen2Desc%
+elements["einstellungen2"].Push("Einstellungen2Desc")
 
 Gui, main:Add, Picture, x10 y10 gCallbackKillbinds vNavigationKillbinds, img/button_killbinds.png
 Gui, main:Add, Picture, x10 y80 gCallbackKeybinds vNavigationKeybinds, img/button_keybinds.png
@@ -261,10 +267,10 @@ Loop, %AnzKillbinds%
 
 font(TextSize["normal"])
 InfoText11 := "Variablen:`n[GKills]`tGesamte Kills`n[GDeaths]`tGesamte Tode`n[GKD]`t`tGesamte KD`n[DKills]`tTägliche Kills`n[DDeaths]`tTägliche Tode`n[DKD]`t`tTägliche KD`n[Weapon]`tAktuelle Waffe`n"
-InfoText12 := "`n/setvs`t`tLegt den Chat für /vs fest`n/vs`t`tSendet eine Nachfrage nach Verstärkung`n/hwd`t`tAutomatisches Housewithdraw`n/GetCont`tAbfrage über gespeicherte Plantagen etc`n/GetPlant`tAbfrage über gespeicherte Plantagen etc`n/SetKills`tSetzt die GDeaths`n/SetDeaths`tSetzt die GDeaths`n/DebugVisual`tEntfernt alle aktuellen Overlays`n/cls`t`tSpammt den Chat Clientseitig"
+InfoText12 := "`n/setvs`t`tLegt den Chat für /vs fest`n/vs`t`tSendet eine Nachfrage nach Verstärkung`n/hwd`t`tAutomatisches Housewithdraw`n/GetCont`tAbfrage über gespeicherte Plantagen etc`n/GetPlant`tAbfrage über gespeicherte Plantagen etc`n/SetKills`tSetzt die GKills`n/SetDeaths`tSetzt die GDeaths`n/DebugVisual`tEntfernt alle aktuellen Overlays`n/MoveOverlay`tÄndert die Position des Overlays`n/Math`t`tTaschenrechner"
 Gui, main:add, Text, x230 y110 w450 vInfoText1 c%SecondColor% +Hidden, %InfoText11%%InfoText12%
 InfoText21 := "`n[Zone]`t`tAktuelle Zone`n[City]`t`tAktuelles Stadtgebiet`n[Vehicle]`tAktuelles Fahrzeug!!`n[Screen]`tMacht einen Screen mit F8`n[WaitXXXX]`tWartet XXXX-Millisekunden`n[Streak]`tAktulle Streak`n"
-InfoText22 := "`n/api`t`tDe-/aktiviert die API`nDoppel M`t/mv /oldmv /towopen`n/DefMoney`tAm ATM das Bargeld festsetzen`n/Playerdata`tWie Playerinfo`n/Frakdata`tÜberprüft wer von einer Fraktion online ist`n/FrakdataID`tGibt die Mitglieder der Fraktion mit /id wieder"
+InfoText22 := "`n/api`t`tDe-/aktiviert die API`nDoppel M`t/mv /oldmv`n/DefMoney`tAm ATM das Bargeld festsetzen`n/Playerdata`tWie Playerinfo`n/Frakdata`tÜberprüft wer von einer Fraktion online ist`n/FrakdataID`tGibt die Mitglieder der Fraktion mit /id wieder"
 InfoText23 := "`n`nMitwirkende:`n[NeS]Ouroboros`tAHK-Scripter`n[NeS]shoXy`t`tBereitstellung einer API`nPokee`t`t`tAHK Unterstützung"
 Gui, main:add, Text, x700 y110 w500 vInfoText2 c%SecondColor% +Hidden, %InfoText21%%InfoText22%%InfoText23%
 elements["informationen"].Push("InfoText1")
@@ -295,20 +301,17 @@ Gui, main:add, Edit, x850 y310 w300 h30 vCalloutText -VScroll +Hidden, %CalloutT
 Gui, main:add, Text, x650 y110 w200 vActionOnLSD c%TextColor% +Hidden, Nach LSD Nebenwirkung:
 Gui, main:add, Edit, x850 y110 w300 h30 vActionOnLSDText -VScroll +Hidden, %ActionOnLSDText%
 
-
-Gui, main:add, Text, x730 y410 h30 vLSDOverlayText c%TextColor% +Hidden, `t`tX:`nLSD Overlay:`n`t`tY:
-Gui, main:add, Edit, x850 y400 h30 w60 vLSDOverlayX +Hidden +Number, %LSDOverlayX%
-Gui, main:add, Edit, x850 y440 h30 w60 vLSDOverlayY +Hidden +Number, %LSDOverlayY%
-
-Gui, main:add, Text, x970 y410 h30 vCarOverlayText c%TextColor% +Hidden, `t`tX:`nCarheal Overlay:`n`t`tY:
-Gui, main:add, Edit, x1090 y400 h30 w60 vCarOverlayX +Hidden +Number, %CarOverlayX%
-Gui, main:add, Edit, x1090 y440 h30 w60 vCarOverlayY +Hidden +Number, %CarOverlayY%
-
 Gui, main:add, Text, x700 y360 h30 w260 vHotkeyToggleText c%TextColor% +Hidden, Keybinder ein- / ausschalten
-Gui, main:add, Hotkey, x950 y360 h30 w60 vHotkeyToggle -VScroll +Hidden, %HotkeyToggle%
+Gui, main:add, Hotkey, x920 y360 h30 w60 vHotkeyToggle -VScroll +Hidden, %HotkeyToggle%
+
+Gui, main:add, Text, x1050 y360 h30 w60 vVSHotkeyText c%TextColor% +Hidden, /vs
+Gui, main:add, Hotkey, x1090 y360 h30 w60 vVSHotkey -VScroll +Hidden, %VSHotkey%
 
 Gui, main:add, CheckBox, x230 y410 vAutoSwitchGun Checked%AutoSwitchGun% c%TextColor% +Hidden, Automatisches Swapgun
 Gui, main:add, CheckBox, x230 y460 vActivePremium Checked%ActivePremium% c%TextColor% +Hidden, Aktives Premium
+
+Gui, main:add, Button, x1090 y460 h30 w100 gSwitchEinstellungen vEinstellungen2 +Hidden, Einstellungen 2
+Gui, main:add, Button, x1090 y460 h30 w100 gSwitchEinstellungen vEinstellungen1 +Hidden, Einstellungen 1
 
 elements["einstellungen"].Push("MouseText1")
 elements["einstellungen"].Push("MouseText2")
@@ -329,16 +332,15 @@ elements["einstellungen"].Push("CallinText")
 elements["einstellungen"].Push("CalloutText")
 elements["einstellungen"].Push("ActionOnLSD")
 elements["einstellungen"].Push("ActionOnLSDText")
-elements["einstellungen"].Push("LSDOverlayText")
-elements["einstellungen"].Push("LSDOverlayX")
-elements["einstellungen"].Push("LSDOverlayY")
-elements["einstellungen"].Push("CarOverlayText")
-elements["einstellungen"].Push("CarOverlayX")
-elements["einstellungen"].Push("CarOverlayY")
 elements["einstellungen"].Push("HotkeyToggleText")
 elements["einstellungen"].Push("HotkeyToggle")
 elements["einstellungen"].Push("AutoSwitchGun")
 elements["einstellungen"].Push("ActivePremium")
+elements["einstellungen"].Push("VSHotkeyText")
+elements["einstellungen"].Push("VSHotkey")
+elements["einstellungen"].Push("Einstellungen2")
+
+elements["einstellungen2"].Push("Einstellungen1")
 
 
 
@@ -376,6 +378,36 @@ Loop, %AnzFrakbinds%
 	}
 return
 
+SwitchEinstellungen:
+if(currentGUI = "Einstellungen") {
+	if(MouseButton1)
+		Hotkey, XButton1, Label_for_all_Hotkeys, off
+	if(MouseButton2)
+		Hotkey, XButton2, Label_for_all_Hotkeys, off
+	if(HotkeyToggle)
+		Hotkey, %HotkeyToggle%, Label_ToggleKey, off
+	if(VSHotkey)
+		Hotkey, %VSHotkey%, Label_VS, off
+	}
+Gui, main:submit, NoHide
+if(currentGUI = "Einstellungen") {
+	if(MouseButton1)
+		Hotkey, XButton1, Label_for_all_Hotkeys, On
+	if(MouseButton2)
+		Hotkey, XButton2, Label_for_all_Hotkeys, On
+	if(HotkeyToggle)
+		Hotkey, %HotkeyToggle%, Label_ToggleKey, On
+	if(VSHotkey)
+		Hotkey, %VSHotkey%, Label_VS, On
+	}
+
+if(currentGUI = "Einstellungen")
+	ChangeTab("einstellungen2", 1)
+	else
+	ChangeTab("einstellungen", 1)
+
+return
+
 CallbackKillbinds:
 CallbackKeybinds:
 CallbackFrakbinds:
@@ -400,6 +432,8 @@ if(currentGUI = "Einstellungen") {
 		Hotkey, XButton2, Label_for_all_Hotkeys, off
 	if(HotkeyToggle)
 		Hotkey, %HotkeyToggle%, Label_ToggleKey, off
+	if(VSHotkey)
+		Hotkey, %VSHotkey%, Label_VS, off
 	}
 if(currentGUI = "Frakbinds") {
 	Loop, %AnzFrakbinds%
@@ -426,6 +460,8 @@ if(currentGUI = "Einstellungen") {
 		Hotkey, XButton2, Label_for_all_Hotkeys, on
 	if(HotkeyToggle)
 		Hotkey, %HotkeyToggle%, Label_ToggleKey, on
+	if(VSHotkey)
+		Hotkey, %VSHotkey%, Label_VS, on
 	}
 if(currentGUI = "Frakbinds") {
 	Loop, %AnzFrakbinds%
@@ -632,18 +668,18 @@ Hotkey, Escape, Off
 return
 
 ~M::
-if(EnableAPI AND IsChatOpen() OR IsDialogOpen() OR IsMenuOpen())
+if(EnableAPI && IsChatOpen() || EnableAPI && IsDialogOpen() || EnableAPI && IsMenuOpen())
 	return
 KeyWait, m
 KeyWait, m, D T0.2
 if(ErrorLevel)
 	return
-KBOSend("/mv~/oldmv~/towopen")
+KBOSend("/mv~/oldmv")
 return
 
 +F::
 ~F::
-if(EnableAPI AND IsChatOpen() OR IsDialogOpen() OR IsMenuOpen())
+if(EnableAPI && IsChatOpen() || EnableAPI && IsDialogOpen() || EnableAPI && IsMenuOpen())
 	return
 if(EnableAPI && IsPlayerDriver()) {
 	sleep, 500
@@ -655,6 +691,9 @@ if(EnableAPI && IsPlayerDriver()) {
 		}
 	CarLocked := 1
 	}
+return
+
+EmptyLabel:
 return
 
 LSDTime:
@@ -937,6 +976,7 @@ return
 :?:t/vs::
 Suspend, Permit
 sleep, 200
+Label_VS:
 KBOSend("/" vsChat " Benötige Verstärkung in [Zone] ([City]), Fortbewegungsmittel: [Vehicle]",,1)
 Hotkey, enter, on
 return
@@ -952,15 +992,72 @@ if(vsChat) {
 Hotkey, enter, on
 return
 
-:?:t/CLS::
+:?:t/NoMath::
+:?:t/Math::
 Suspend, Permit
 Sleep, 200
-ClearChat := ""
-FileReadLine, PageSize, %A_MyDocuments%\GTA San Andreas User Files\SAMP\sa-mp.cfg, 6
-Pos := RegExMatch(PageSize, "\d+$", PageSize)
-Loop, %PageSize%
-	ClearChat .= "/echo ¯\_(-_-)_/¯~"
-KBOSend(ClearChat)
+Eingabeaufforderung(Math, "Rechnung: ")
+if(!Math) {
+	KBOSend("/echo Keine Eingabe erkannt!")
+	Hotkey, enter, on
+	return
+	}
+KBOSend("/echo " Math " = " (((MathResult := StrCalc(Math)) != "") ? floorDecimal(MathResult, 2) : "Fehler"))
+Hotkey, enter, on
+return
+
+:?:t/MoveOverlay::
+:?:t/MoveOverlay LSD::
+:?:t/MoveOverlay Car::
+:?:t/MoveOverlay Plant::
+:?:t/MoveOverlay Cont::
+:?:t/MoveOverlay Skin::
+Suspend, Permit
+sleep, 200
+if(!EnableAPI) {
+	KBOSend("/echo Die Overlays sind nur mit API verfügbar.")
+	Hotkey, enter, on
+	return
+	}
+if(StrLen(A_ThisLabel) = 16) {
+	KBOSend("/echo Fehler: /MoveOverlay [LSD/Car/Plant/Cont/Skin]")
+	Hotkey, enter, on
+	return
+	}
+LoadIni()
+BlockInput, On
+OverlayID := SubStr(A_ThisLabel, 18)
+if(OverlayID = "LSD") {
+	nOverlayPos := EditOverlay("90", LSDOverlayX, LSDOverlayY)
+	if(nOverlayPos[1]) {
+		LSDOverlayX := nOverlayPos[2]
+		LSDOverlayY := nOverlayPos[3]
+		}
+	}
+if(OverlayID = "Car") {
+	nOverlayPos := EditOverlay("Carheal: 666", CarOverlayX, CarOverlayY)
+	if(nOverlayPos[1]) {
+		CarOverlayX := nOverlayPos[2]
+		CarOverlayY := nOverlayPos[3]
+		}
+	}
+if(OverlayID = "Plant" || OverlayID = "Cont") {
+	nOverlayPos := EditOverlay("BigMap", BigMapX, BigMapY)
+	if(nOverlayPos[1]) {
+		BigMapX := nOverlayPos[2]
+		BigMapY := nOverlayPos[3]
+		}
+	}
+if(OverlayID = "Skin") {
+	nOverlayPos := EditOverlay("Skin", SkinPosX, SkinPosY)
+	if(nOverlayPos[1]) {
+		SkinPosX := nOverlayPos[2]
+		SkinPosY := nOverlayPos[3]
+		}
+	}
+if(nOverlayPos[1])
+	SaveIni()
+BlockInput, Off
 Hotkey, enter, on
 return
 
@@ -1233,17 +1330,25 @@ LoadIni() {
 	if(ActionOnLSDText = "ERROR")
 		ActionOnLSDText := ""
 	
-	IniRead, CarOverlayX, %inipath%, Einstellungen, CarOverlayX, 180
-	IniRead, CarOverlayY, %inipath%, Einstellungen, CarOverlayY, 480
-	IniRead, LSDOverlayX, %inipath%, Einstellungen, LSDOverlayX, 180
-	IniRead, LSDOverlayY, %inipath%, Einstellungen, LSDOverlayY, 460
-	
 	IniRead, HotkeyToggle, %inipath%, Einstellungen, HotkeyToggle, ERROR
 	if(HotkeyToggle = "ERROR")
 		HotkeyToggle := ""
 	
 	IniRead, ActivePremium, %inipath%, Einstellungen, ActivePremium, 0
 	IniRead, AutoSwitchGun, %inipath%, Einstellungen, AutoSwitchGun, 0
+	IniRead, VSHotkey, %inipath%, Einstellungen, VSHotkey, ERROR
+	if(VSHotkey = "ERROR")
+		VSHotkey := ""
+
+	IniRead, BigMapX, %inipath%, Overlay, BigMapX, 570
+	IniRead, BigMapY, %inipath%, Overlay, BigMapY, 295
+	IniRead, SkinPosX, %inipath%, Overlay, SkinPosX, 770
+	IniRead, SkinPosY, %inipath%, Overlay, SkinPosY, 380
+	
+	IniRead, CarOverlayX, %inipath%, Overlay, CarOverlayX, 180
+	IniRead, CarOverlayY, %inipath%, Overlay, CarOverlayY, 480
+	IniRead, LSDOverlayX, %inipath%, Overlay, LSDOverlayX, 180
+	IniRead, LSDOverlayY, %inipath%, Overlay, LSDOverlayY, 460
 	
 	Loop, 3
 		{
@@ -1301,15 +1406,20 @@ SaveIni() {
 	
 	IniWrite, %ActionOnLSDText%, %inipath%, Einstellungen, ActionOnLSDText
 	
-	IniWrite, %CarOverlayX%, %inipath%, Einstellungen, CarOverlayX
-	IniWrite, %CarOverlayY%, %inipath%, Einstellungen, CarOverlayY
-	IniWrite, %LSDOverlayX%, %inipath%, Einstellungen, LSDOverlayX
-	IniWrite, %LSDOverlayY%, %inipath%, Einstellungen, LSDOverlayY
-	
 	IniWrite, %HotkeyToggle%, %inipath%, Einstellungen, HotkeyToggle
-	
 	IniWrite, %ActivePremium%, %inipath%, Einstellungen, ActivePremium
 	IniWrite, %AutoSwitchGun%, %inipath%, Einstellungen, AutoSwitchGun
+	IniWrite, %VSHotkey%, %inipath%, Einstellungen, VSHotkey
+	
+	IniWrite, %CarOverlayX%, %inipath%, Overlay, CarOverlayX
+	IniWrite, %CarOverlayY%, %inipath%, Overlay, CarOverlayY
+	IniWrite, %LSDOverlayX%, %inipath%, Overlay, LSDOverlayX
+	IniWrite, %LSDOverlayY%, %inipath%, Overlay, LSDOverlayY
+	
+	IniWrite, %BigMapX%, %inipath%, Overlay, BigMapX
+	IniWrite, %BigMapY%, %inipath%, Overlay, BigMapY
+	IniWrite, %SkinPosX%, %inipath%, Overlay, SkinPosX
+	IniWrite, %SkinPosY%, %inipath%, Overlay, SkinPosY
 	
 	Loop, 3
 		{
@@ -1402,20 +1512,35 @@ GetChatLine(Line, ByRef Output, timestamp=0, color=0){
 	} 
 
 Eingabeaufforderung(ByRef Output, DoClip="Eingabe: ") {
-	sleep, 200
-	SaveClip()
-	Clipboard := "/echo " DoClip
-	ClipWait, 1
-	SendInput, {F6}
-	SendInput, ^a^v
-	SetKeyDelay, 200
-	Suspend, Toggle
-	Input, output, V, {enter}
-	Suspend, Toggle
-	SendInput, ^a
-	SendInput, {BackSpace}{enter}
-	SetKeyDelay, -1
-	LoadClip()
+	if(EnableAPI) {
+		SaveClip()
+		DoClip .= "`nBestätigen mit Enter, leerlassen bricht ab"
+		ShowDialog(DialogIndex, 1, "Eingabeaufforderung", DoClip, "Drücke Enter", "")
+		DialogIndex += 1
+		Suspend, Toggle
+		SetKeyDelay, 200
+		KeyWait, enter, D
+		Suspend, Toggle
+		SendInput, ^a^c
+		ClipWait, 0
+		output := Clipboard
+		SendInput, {backspace}
+		SetKeyDelay, -1
+		LoadClip()
+		} else {
+		sleep, 200
+		SaveClip()
+		Clipboard := "/echo " DoClip
+		ClipWait, 1
+		SendInput, {F6}^a^v
+		SetKeyDelay, 200
+		Suspend, Toggle
+		Input, output, V, {enter}
+		Suspend, Toggle
+		SendInput, ^a{BackSpace}{enter}
+		SetKeyDelay, -1
+		LoadClip()
+		}
 	return output
 	}
 
@@ -1445,7 +1570,7 @@ if((TryStr := SubStr(FP_PlayerName, 1, 1)) = "#") {
 	RegMode := 1
 	} else {
 	KBOSend("/id " FP_PlayerName)
-	sleep, 100
+	sleep, 200
 	RegMode := 2
 	Loop, 3
 		{
@@ -1462,16 +1587,17 @@ if((TryStr := SubStr(FP_PlayerName, 1, 1)) = "#") {
 	return 
 	}
 
-changeTab(tabName:= "Home"){
-	StringLower, currentGUILower, currentGUI
-	GuiControl,, Navigation%currentGUI%, img/button_%currentGUILower%.png
+changeTab(tabName:= "killbinds", silent="0") {
+	if(!silent) {
+		StringLower, currentGUILower, currentGUI
+		GuiControl,, Navigation%currentGUI%, img/button_%currentGUILower%.png
+		GuiControl,, Navigation%tabName%, img/button_active%tabName%.png
+		}
 	currentGUI:= tabName
-	GuiControl,, Title, Purple Ice `>`> %tabName%
-	GuiControl,, Navigation%tabName%, img/button_active%tabName%.png
-	Loop, 8
+	Loop, 9
 		{
 		i:= A_Index
-		section:= (i == 1 ? "killbinds" : (i == 2 ? "keybinds" : (i == 3 ? "frakbinds" : (i == 4 ? "autonom" : (i == 5 ? "informationen" : (i == 6 ? "einstellungen" : (i == 7 ? "speichern" : (i == 8 ? "login" : "wtfahkduarsch"))))))))
+		section:= (i == 1 ? "killbinds" : (i == 2 ? "keybinds" : (i == 3 ? "frakbinds" : (i == 4 ? "autonom" : (i == 5 ? "informationen" : (i == 6 ? "einstellungen" : (i == 7 ? "speichern" : (i == 8 ? "login" : (i == 9 ? "einstellungen2" : "wtfahkduarsch")))))))))
 		For, index, element in elements[section] {
 			GuiControl, Hide, %element%
 			}
