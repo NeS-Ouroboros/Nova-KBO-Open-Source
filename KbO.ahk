@@ -3,7 +3,7 @@
 #SingleInstance, Force
 #Persistent
 #HotString EndChars `n
-FileEncoding, CP65001
+;~ FileEncoding, CP65001
 
 If Not A_IsAdmin {
 	Run *RunAs %A_ScriptFullPath%
@@ -124,7 +124,7 @@ global SkinPosY
 global DialogIndex := 13296
 
 global currentGUI := "Killbinds"
-global elements := {killbinds: [], keybinds: [], frakbinds: [], autonom: [], informationen: [], einstellungen: [], login: [], einstellungen2: []}
+global elements := {killbinds: [], keybinds: [], frakbinds: [], autonom: [], informationen: [], informationen2: [], einstellungen: [], einstellungen2: [], login: []}
 
 SetTimer, ChatLabel, 100
 SetTimer, Settings, 500
@@ -210,6 +210,7 @@ Gui, main:add, Text, x230 y10 h80 w960 vAutonomDesc c%TextColor% +Hidden, %Auton
 elements["autonom"].Push("AutonomDesc")
 Gui, main:add, Text, x230 y10 h80 w960 vInformationDesc c%TextColor% +Hidden, %InformationDesc%
 elements["informationen"].Push("InformationDesc")
+elements["informationen2"].Push("InformationDesc")
 Gui, main:add, Text, x230 y10 h80 w960 vFrakbindDesc c%TextColor% +Hidden, %FrakbindDesc%
 elements["frakbinds"].Push("FrakbindDesc")
 Gui, main:add, Text, x230 y10 h80 w960 vEinstellungenDesc c%TextColor% +Hidden, %EinstellungenDesc%
@@ -266,15 +267,25 @@ Loop, %AnzKillbinds%
 	}
 
 font(TextSize["normal"])
-InfoText11 := "Variablen:`n[GKills]`tGesamte Kills`n[GDeaths]`tGesamte Tode`n[GKD]`t`tGesamte KD`n[DKills]`tTägliche Kills`n[DDeaths]`tTägliche Tode`n[DKD]`t`tTägliche KD`n[Weapon]`tAktuelle Waffe`n"
-InfoText12 := "`n/setvs`t`tLegt den Chat für /vs fest`n/vs`t`tSendet eine Nachfrage nach Verstärkung`n/hwd`t`tAutomatisches Housewithdraw`n/GetCont`tAbfrage über gespeicherte Plantagen etc`n/GetPlant`tAbfrage über gespeicherte Plantagen etc`n/SetKills`tSetzt die GKills`n/SetDeaths`tSetzt die GDeaths`n/DebugVisual`tEntfernt alle aktuellen Overlays`n/MoveOverlay`tÄndert die Position des Overlays`n/Math`t`tTaschenrechner"
-Gui, main:add, Text, x230 y110 w450 vInfoText1 c%SecondColor% +Hidden, %InfoText11%%InfoText12%
-InfoText21 := "`n[Zone]`t`tAktuelle Zone`n[City]`t`tAktuelles Stadtgebiet`n[Vehicle]`tAktuelles Fahrzeug!!`n[Screen]`tMacht einen Screen mit F8`n[WaitXXXX]`tWartet XXXX-Millisekunden`n[Streak]`tAktulle Streak`n"
-InfoText22 := "`n/api`t`tDe-/aktiviert die API`nDoppel M`t/mv /oldmv`n/DefMoney`tAm ATM das Bargeld festsetzen`n/Playerdata`tWie Playerinfo`n/Frakdata`tÜberprüft wer von einer Fraktion online ist`n/FrakdataID`tGibt die Mitglieder der Fraktion mit /id wieder"
-InfoText23 := "`n`nMitwirkende:`n[NeS]Ouroboros`tAHK-Scripter`n[NeS]shoXy`t`tBereitstellung einer API`nPokee`t`t`tAHK Unterstützung"
-Gui, main:add, Text, x700 y110 w500 vInfoText2 c%SecondColor% +Hidden, %InfoText21%%InfoText22%%InfoText23%
-elements["informationen"].Push("InfoText1")
-elements["informationen"].Push("InfoText2")
+InfoText11 := "Variablen:`n[GKills]`tGesamte Kills`n[GDeaths]`tGesamte Tode`n[GKD]`t`tGesamte KD`n[DKills]`tTägliche Kills`n[DDeaths]`tTägliche Tode`n[DKD]`t`tTägliche KD`n[Weapon]`tAktuelle Waffe`n[Zone]`t`tAktuelle Zone`n[City]`t`tAktuelles Stadtgebiet`n[Vehicle]`tAktuelles Fahrzeug!!`n[Screen]`tMacht einen Screen mit F8`n[WaitXXXX]`tWartet XXXX-Millisekunden`n[Streak]`tAktulle Streak"
+InfoText12 := "Special Autonomer Chat:`nLinks: [(Möglichkeit1|Möglichkeit2|Möglichkeit3|...)]`n`t`tEs ist ein Platzhalter`nRechts: [ChatX]`n`t`tNimmt das X-te Wort aus dem Chat"
+Gui, main:add, Text, x230 y110 vInfoText11 c%SecondColor% +Hidden, %InfoText11%
+Gui, main:add, Text, x700 y110 vInfoText12 c%SecondColor% +Hidden, %InfoText12%
+
+InfoText21 := "Befehle:`n/setvs`t`tLegt den Chat für /vs fest`n/vs`t`tSendet eine Nachfrage nach Verstärkung`n/hwd`t`tAutomatisches Housewithdraw`n/GetCont`tAbfrage über gespeicherte Plantagen etc`n/GetPlant`tAbfrage über gespeicherte Plantagen etc`n/SetKills`tSetzt die GKills`n/SetDeaths`tSetzt die GDeaths`n/DebugVisual`tEntfernt alle aktuellen Overlays`n/MoveOverlay`tÄndert die Position des Overlays`n/Math`t`tTaschenrechner`n/api`t`tDe-/aktiviert die API`nDoppel M`t/mv /oldmv`n/DefMoney`tAm ATM das Bargeld festsetzen`n/Playerdata`tWie Playerinfo`n/Frakdata`tÜberprüft wer von einer Fraktion online ist`n/FrakdataID`tGibt die Mitglieder der Fraktion mit /id wieder"
+InfoText3 := "Mitwirkende:`n[NeS]Ouroboros`tAHK-Scripter`n[NeS]shoXy`t`tBereitstellung einer API`nPokee`t`t`tAHK Unterstützung"
+Gui, main:add, Text, x230 y110 vInfoText21 c%SecondColor% +Hidden, %InfoText21%
+Gui, main:add, Text, x900 y10 w500 vInfoTextBoth c%SecondColor% +Hidden, %InfoText3%
+
+Gui, main:add, Button, x1070 y460 h30 w120 gSwitchLabel vInformationen2 +Hidden, Informationen 2
+Gui, main:add, Button, x1070 y460 h30 w120 gSwitchLabel vInformationen1 +Hidden, Informationen 1
+elements["informationen"].Push("InfoText11")
+elements["informationen"].Push("InfoText12")
+elements["informationen2"].Push("InfoText21")
+elements["informationen"].Push("InfoTextBoth")
+elements["informationen2"].Push("InfoTextBoth")
+elements["informationen"].Push("Informationen2")
+elements["informationen2"].Push("Informationen1")
 
 Gui, main:add, Checkbox, x230 y110 vAutoEnableEngine Checked%AutoEnableEngine% c%TextColor% +Hidden, Automatisch Motor einschalten
 Gui, main:add, Checkbox, x230 y160 vAutoEnableLights Checked%AutoEnableLights% c%TextColor% +Hidden, Automatisch Licht einschalten
@@ -310,8 +321,8 @@ Gui, main:add, Hotkey, x1090 y360 h30 w60 vVSHotkey -VScroll +Hidden, %VSHotkey%
 Gui, main:add, CheckBox, x230 y410 vAutoSwitchGun Checked%AutoSwitchGun% c%TextColor% +Hidden, Automatisches Swapgun
 Gui, main:add, CheckBox, x230 y460 vActivePremium Checked%ActivePremium% c%TextColor% +Hidden, Aktives Premium
 
-Gui, main:add, Button, x1090 y460 h30 w100 gSwitchEinstellungen vEinstellungen2 +Hidden, Einstellungen 2
-Gui, main:add, Button, x1090 y460 h30 w100 gSwitchEinstellungen vEinstellungen1 +Hidden, Einstellungen 1
+Gui, main:add, Button, x1090 y460 h30 w100 gSwitchLabel vEinstellungen2 +Hidden, Einstellungen 2
+Gui, main:add, Button, x1090 y460 h30 w100 gSwitchLabel vEinstellungen1 +Hidden, Einstellungen 1
 
 elements["einstellungen"].Push("MouseText1")
 elements["einstellungen"].Push("MouseText2")
@@ -339,7 +350,6 @@ elements["einstellungen"].Push("ActivePremium")
 elements["einstellungen"].Push("VSHotkeyText")
 elements["einstellungen"].Push("VSHotkey")
 elements["einstellungen"].Push("Einstellungen2")
-
 elements["einstellungen2"].Push("Einstellungen1")
 
 
@@ -378,7 +388,7 @@ Loop, %AnzFrakbinds%
 	}
 return
 
-SwitchEinstellungen:
+SwitchLabel:
 if(currentGUI = "Einstellungen") {
 	if(MouseButton1)
 		Hotkey, XButton1, Label_for_all_Hotkeys, off
@@ -400,12 +410,23 @@ if(currentGUI = "Einstellungen") {
 	if(VSHotkey)
 		Hotkey, %VSHotkey%, Label_VS, On
 	}
-
-if(currentGUI = "Einstellungen")
+if(currentGUI = "informationen") {
+	ChangeTab("informationen2", 1)
+	return
+	}
+if(currentGUI = "informationen2") {
+	ChangeTab("informationen", 1)
+	return
+	}
+if(currentGUI = "einstellungen") {
 	ChangeTab("einstellungen2", 1)
-	else
+	return
+	}
+if(currentGUI = "einstellungen2") {
 	ChangeTab("einstellungen", 1)
-
+	return
+	}
+SaveIni()
 return
 
 CallbackKillbinds:
@@ -546,7 +567,7 @@ if(StartUpProg3)
 	InitStartUp(3)
 IfExist, temp.ini
 	{
-	Loop, 10
+	Loop, %AnzFrakbinds%
 		{
 		IniRead, FrakbindText%A_Index%, Temp.ini, Frakbinds, FrakbindText%A_Index%, 0
 		if(!FrakbindText%A_Index%)
@@ -615,6 +636,8 @@ Loop, %AnzFrakbinds%
 		}
 	elements["frakbinds"].Push("FrakbindText" A_Index)
 	elements["frakbinds"].Push("FrakHotkey" A_Index)
+	if(FrakHotkey%A_Index% != "")
+		Hotkey, % FrakHotkey%A_Index%, Label_for_all_Hotkeys, on
 	}
 
 changeTab("killbinds")
@@ -691,9 +714,6 @@ if(EnableAPI && IsPlayerDriver()) {
 		}
 	CarLocked := 1
 	}
-return
-
-EmptyLabel:
 return
 
 LSDTime:
@@ -788,6 +808,10 @@ if(EnableAPI && AutoSwitchGun && IsPlayerInAnyVehicle() && IsPlayerPassenger() &
 			}
 		}
 	}
+if(EnableAPI && IsChatOpen() && !ForceSuspend || EnableAPI && IsDialogOpen() && !ForceSuspend || EnableAPI && IsMenuOpen() && !ForceSuspend)
+	Suspend, On
+if(EnableAPI && IsChatOpen() = 0 && IsDialogOpen() = 0 && IsMenuOpen() = 0 && !ForceSuspend)
+	Suspend, Off
 return
 
 ChatLabel:
@@ -803,14 +827,12 @@ if(RegStr(ChatOutput, "INFO: Gib /friedhof ein, um zu sehen wie lange du noch au
 	StreakKills := 0
 	SaveIni()
 	}
-	
 if(RegStr(ChatOutput, "SERVER: Willkommen ")) {
 	Suspend, Off
 	Temp := StrSplit(ChatOutput, " ")
 	UserName := Temp[Temp.MaxIndex()]
 	IniWrite, %UserName%, %inipath%, Settings, UserName
 	}
-	
 if(RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Vorsätzlicher Mord ). Reporter: Anonym.") || RegStr(ChatOutput, "SERVER: Du hast gerade einen Mord begangen. Achtung!") || RegStr(ChatOutput, "GANGWAR: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CASINO-EROBERUNG: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CRACKFESTUNG: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Fahrerflucht ). Reporter: Anonym.")) {
 	if(!EnableKillbinds)
 		return
@@ -940,15 +962,7 @@ if(varHWD && RegStr(ChatOutput, "FEHLER: /housewithdraw [Betrag zwischen 1 -")) 
 if(RegStr(ChatOutput, "Connecting to 195.201.70.37:7777..."))
 	Suspend, On
 Loop, %AnzAutonom%
-	{
-	if(AutonomReact%A_Index% && AutonomAction%A_Index% && InStr(ChatOutput, AutonomReact%A_Index%, 0) && !InStr(ChatOutput, AutonomAction%A_Index%, 0)) {
-		if(!InStr(AutonomAction%A_Index%, "/afk", 0) && !InStr(AutonomAction%A_Index%, "/use", 0)) {
-			KBOSend(AutonomAction%A_Index%)
-			} else {
-			KBOSend("Es wurde versucht einen verbotenen autonomen Keybind durchzuführen (z.B. /afk)")
-			}
-		}
-	}
+	ChatAutonom(ChatOutput, AutonomReact%A_Index%, AutonomAction%A_Index%)
 if(RegStr(ChatOutput, "Momentanes Wantedlevel: ", " | Wantedpunkte: ") && AutoSendWPs) {
 	Pos := RegExMatch(ChatOutput, "Wantedpunkte: \d+", GotWPs)
 	GotWPs := SubStr(GotWPs, 15)
@@ -973,6 +987,19 @@ if(CarLocked && IsPlayerDriver() = 0 && EnableAPI)
 
 return
 
+:?:t/Killbind::
+Suspend, Permit
+Sleep, 200
+if(EnableKillbinds) {
+	KBOSend("/echo Der Killbinder wurde nun {ff0000}deaktiviert{ffffff}.")
+	EnableKillbinds := 0
+	} else {
+	KBOSend("/echo Der Killbinder wurd nun {00ff00}aktiviert{ffffff}.")
+	EnableKillbinds := 1
+	}
+Hotkey, enter, on
+return
+
 :?:t/vs::
 Suspend, Permit
 sleep, 200
@@ -984,10 +1011,10 @@ return
 :?:t/setvs::
 Suspend, Permit
 sleep, 200
-Eingabeaufforderung(vsChat, "In welchen Chat soll /vs senden? /")
+Eingabeaufforderung(vsChat, "In welchen Chat soll /vs senden?", "/")
 if(vsChat) {
 	IniWrite, %vsChat%, %inipath%, Settings, vsChat
-	KBOSend("/echo Verstärkung wird nun den den ""/" vsChat """-Chat gerufen")
+	KBOSend("/echo Verstärkung wird nun den den " (EnableAPI ? """" : """/" ) vsChat """-Chat gerufen")
 	}
 Hotkey, enter, on
 return
@@ -1028,7 +1055,7 @@ LoadIni()
 BlockInput, On
 OverlayID := SubStr(A_ThisLabel, 18)
 if(OverlayID = "LSD") {
-	nOverlayPos := EditOverlay("90", LSDOverlayX, LSDOverlayY)
+	nOverlayPos := EditOverlay("LSD Timer: 90", LSDOverlayX, LSDOverlayY)
 	if(nOverlayPos[1]) {
 		LSDOverlayX := nOverlayPos[2]
 		LSDOverlayY := nOverlayPos[3]
@@ -1511,7 +1538,7 @@ GetChatLine(Line, ByRef Output, timestamp=0, color=0){
 	return
 	} 
 
-Eingabeaufforderung(ByRef Output, DoClip="Eingabe: ") {
+Eingabeaufforderung(ByRef Output, DoClip="Eingabe: ", PreSend="") {
 	if(EnableAPI) {
 		SaveClip()
 		DoClip .= "`nBestätigen mit Enter, leerlassen bricht ab"
@@ -1519,10 +1546,13 @@ Eingabeaufforderung(ByRef Output, DoClip="Eingabe: ") {
 		DialogIndex += 1
 		Suspend, Toggle
 		SetKeyDelay, 200
+		if(PreSend)
+			SendInput, %PreSend%
 		KeyWait, enter, D
 		Suspend, Toggle
 		SendInput, ^a^c
-		ClipWait, 0
+		while(!Clipboard)
+			Sleep, 2
 		output := Clipboard
 		SendInput, {backspace}
 		SetKeyDelay, -1
@@ -1535,6 +1565,8 @@ Eingabeaufforderung(ByRef Output, DoClip="Eingabe: ") {
 		SendInput, {F6}^a^v
 		SetKeyDelay, 200
 		Suspend, Toggle
+		if(PreSend)
+			SendInput, %PreSend%
 		Input, output, V, {enter}
 		Suspend, Toggle
 		SendInput, ^a{BackSpace}{enter}
@@ -1592,12 +1624,17 @@ changeTab(tabName:= "killbinds", silent="0") {
 		StringLower, currentGUILower, currentGUI
 		GuiControl,, Navigation%currentGUI%, img/button_%currentGUILower%.png
 		GuiControl,, Navigation%tabName%, img/button_active%tabName%.png
+		if(currentGUI = "einstellungen2")
+			GuiControl,, NavigationEinstellungen, img/button_einstellungen.png
+		if(currentGUI = "informationen2")
+			GuiControl,, vNavigationInformationen, img/button_informationen.png
 		}
 	currentGUI:= tabName
-	Loop, 9
+	Loop, 10
 		{
 		i:= A_Index
-		section:= (i == 1 ? "killbinds" : (i == 2 ? "keybinds" : (i == 3 ? "frakbinds" : (i == 4 ? "autonom" : (i == 5 ? "informationen" : (i == 6 ? "einstellungen" : (i == 7 ? "speichern" : (i == 8 ? "login" : (i == 9 ? "einstellungen2" : "wtfahkduarsch")))))))))
+		section:= (i == 1 ? "killbinds" : (i == 2 ? "keybinds" : (i == 3 ? "frakbinds" : (i == 4 ? "autonom" : (i == 5 ? "informationen" : (i == 6 ? "informationen2" : (i == 7 ? "einstellungen" : (i == 8 ? "einstellungen2" : (i == 9 ? "login" : (i == 10 ? "speichern" : "wtfahkduarsch"))))))))))
+		 ;~ {killbinds: [], keybinds: [], frakbinds: [], autonom: [], informationen: [], informationen2: [], einstellungen: [], einstellungen2: [], login: []}
 		For, index, element in elements[section] {
 			GuiControl, Hide, %element%
 			}
