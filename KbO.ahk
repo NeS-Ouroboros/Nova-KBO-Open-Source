@@ -68,7 +68,7 @@ global SoundInfo := "*-1"
 global SoundWarn := "*16"
 global Frak_Typ := {1: "Staat", 2: "Staat", 4: "Staat", 5: "Mafia", 6: "Mafia", 7: "Staat", 9: "Neutral", 11: "Gang", 13: "Gang", 14: "Gang",18: "Mafia", 19: "Gang"}
 global ObjTyp := {1: "Container", 2: "Hanf", 3: "Gold", Container: "1", Hanf: "2", Gold: "3"}
-global CareTyp := {1: "gegossen", 2: "gedüngt"}
+global CareTyp := {1: "gegossen", 2: "gedüngt", 3: "Ammoniak nachgefüllt", 4: "Natronlauge nachgefüllt"}
 global bobopath := A_AppData "\Bobo"
 global inipath := A_AppData "\Bobo\config.ini"
 global AnzKillbinds := 16
@@ -99,7 +99,7 @@ global GuiColor := "424242"
 global MainColor := "60ff78" ;? "ffb760"
 global SecondColor := "f0ff56" ;? "9536f9"
 global TextColor := "ffd026"
-global ChatColor := {Bobo: "cdff5b", Echo: "3aebff", Error: "ff0000", Success: "00ff00", Warning: "ff7800", White: "ffffff"}
+global ChatColor := {Bobo: "cdff5b", Echo: "3aebff", Error: "ff0000", Success: "00ff00", Warning: "ff7800", White: "ffffff", Name: "e2ffb2", Level: "b2ffbe", Handy: "b2fdff"}
 global LSDCounter := 90
 global LSDWarn := 10
 global StreakKills
@@ -112,7 +112,7 @@ global TaeglicheKD
 global LoginState := -1
 global LoginTyp := {0: "Gast", 1: "Angemeldet"}
 global TextSize := {Label: "36", normal: "12", Desc: "20"}
-global KillbinderTitelName := "Killbinder by Ouro R2"
+global KillbinderTitelName := "Killbinder by Ouro REEEEEEmastered"
 global GuiMaxH := 500
 global GuiMaxW := 1200
 global BigMapX
@@ -132,8 +132,9 @@ global elements := {killbinds: [], keybinds: [], frakbinds: [], autonom: [], inf
 SetTimer, ChatLabel, 100
 SetTimer, Settings, 500
 
-#Include SAMP_API.ahk
+GoSub, HookGTA
 #Include Funcs_KbO.ahk
+#Include Include/WPHeader.ahk
 
 ;~ ##############################
 ;~ ####### Funcs_KbO.ahk enthält folgende Funktionen:
@@ -275,25 +276,35 @@ Loop, %AnzKillbinds%
 	}
 
 font(TextSize["normal"])
-InfoText11 := "Variablen:`n[GKills]`tGesamte Kills`n[GDeaths]`tGesamte Tode`n[GKD]`t`tGesamte KD`n[DKills]`tTägliche Kills`n[DDeaths]`tTägliche Tode`n[DKD]`t`tTägliche KD`n[Weapon]`tAktuelle Waffe`n[Zone]`t`tAktuelle Zone`n[City]`t`tAktuelles Stadtgebiet`n[Vehicle]`tAktuelles Fahrzeug!!`n[Screen]`tMacht einen Screen mit F8`n[WaitXXXX]`tWartet XXXX-Millisekunden`n[Streak]`tAktuelle Streak`n[GameText XXXX]`tSendet den Text als Label (Clientseitig) für XXX Millisekunden`n[ID XX]`t`tVor dem Senden kann man den Inhalt bestimmen"
+InfoText11 := "Variablen:`n[GKills]`tGesamte Kills`n[GDeaths]`tGesamte Tode`n[GKD]`t`tGesamte KD`n[DKills]`tTägliche Kills`n[DDeaths]`tTägliche Tode`n[DKD]`t`tTägliche KD`n[Weapon]`tAktuelle Waffe`n[Zone]`t`tAktuelle Zone`n[City]`t`tAktuelles Stadtgebiet`n[Vehicle]`tAktuelles Fahrzeug!!`n[Screen]`tMacht einen Screen mit F8`n[WaitXXXX]`tWartet XXXX-Millisekunden`n[Streak]`tAktuelle Streak`n[GameText XXXX]`tSendet den Text als Label (Clientseitig) für XXX Millisekunden`n[ID XX]`tVor dem Senden kann man den Inhalt bestimmen"
 InfoText12 := "Special Autonomer Chat:`nLinks: `n[(Möglichkeit1|Möglichkeit2|Möglichkeit3|...)]`n`tEs ist ein Platzhalter`n[RegEx]`n`tSuchmuster als RegEx und nicht als Suchtext`nRechts: `n[ChatX]`n`tNimmt das X-te Wort aus dem Chat"
 Gui, main:add, Text, x230 y110 vInfoText11 c%SecondColor% +Hidden, %InfoText11%
 Gui, main:add, Text, x700 y110 vInfoText12 c%SecondColor% +Hidden, %InfoText12%
 
 InfoText21 := "Befehle:`n/setvs`t`tLegt den Chat für /vs fest`n/vs`t`tSendet eine Nachfrage nach Verstärkung`n/hwd`t`tAutomatisches Housewithdraw`n/GetCont`tAbfrage über gespeicherte Plantagen etc`n/GetPlant`tAbfrage über gespeicherte Plantagen etc`n/SetKills`tSetzt die GKills`n/SetDeaths`tSetzt die GDeaths`n/DebugVisual`tEntfernt alle aktuellen Overlays`n/MoveOverlay`tÄndert die Position des Overlays`n/Math`t`tTaschenrechner`n/api`t`tDe-/aktiviert die API`nDoppel M`t/mv /oldmv`n/DefMoney`tAm ATM das Bargeld festsetzen`n/Playerdata`tWie Playerinfo`n/Frakdata`tÜberprüft wer von einer Fraktion online ist`n/FrakdataID`tGibt die Mitglieder der Fraktion mit /id wieder"
+InfoText22 := "`n/kflagpos`tAutomatisches /GetFlagPos`n/WPBinds`tZählt alle WP-Binds auf"
 InfoText3 := "Mitwirkende:`n[NeS]Ouroboros`tAHK-Scripter`n[NeS]shoXy`t`tBereitstellung einer API`nPokee`t`t`tAHK Unterstützung"
 Gui, main:add, Text, x230 y110 vInfoText21 c%SecondColor% +Hidden, %InfoText21%
+Gui, main:add, Text, x650 y110 vInfoText22 c%SecondColor% +Hidden, %InfoText22%
 Gui, main:add, Text, x900 y10 w500 vInfoTextBoth c%SecondColor% +Hidden, %InfoText3%
 
 Gui, main:add, Button, x1070 y460 h30 w120 gSwitchLabel vInformationen2 +Hidden, Informationen 2
 Gui, main:add, Button, x1070 y460 h30 w120 gSwitchLabel vInformationen1 +Hidden, Informationen 1
+
+Gui, main:add, Button, x860 y460 h30 w200 gStartSAMP vStartSAMP +Hidden, SAMP starten
+Gui, main:add, Button, x860 y460 h30 w200 gSelectSAMP vSelectSAMP +Hidden, SAMP auswählen
+
 elements["informationen"].Push("InfoText11")
 elements["informationen"].Push("InfoText12")
 elements["informationen2"].Push("InfoText21")
+elements["informationen2"].Push("InfoText22")
 elements["informationen"].Push("InfoTextBoth")
 elements["informationen2"].Push("InfoTextBoth")
 elements["informationen"].Push("Informationen2")
 elements["informationen2"].Push("Informationen1")
+elements["informationen"].Push("StartSAMP")
+elements["informationen2"].Push("SelectSAMP")
+
 
 Gui, main:add, Checkbox, x230 y110 vAutoEnableEngine Checked%AutoEnableEngine% c%TextColor% +Hidden, Automatisch Motor einschalten
 Gui, main:add, Checkbox, x230 y160 vAutoEnableLights Checked%AutoEnableLights% c%TextColor% +Hidden, Automatisch Licht einschalten
@@ -332,7 +343,6 @@ Gui, main:add, CheckBox, x230 y410 vAutoSwitchGun Checked%AutoSwitchGun% c%TextC
 Gui, main:add, CheckBox, x230 y460 vActivePremium Checked%ActivePremium% c%TextColor% +Hidden, Aktives Premium
 
 Gui, main:add, Button, x1090 y460 h30 w100 gSwitchLabel vEinstellungen2 +Hidden, Einstellungen 2
-Gui, main:add, Button, x1090 y460 h30 w100 gSwitchLabel vEinstellungen1 +Hidden, Einstellungen 1
 
 elements["einstellungen"].Push("MouseText1")
 elements["einstellungen"].Push("MouseText2")
@@ -362,13 +372,51 @@ elements["einstellungen"].Push("ActivePremium")
 elements["einstellungen"].Push("VSHotkeyText")
 elements["einstellungen"].Push("VSHotkey")
 elements["einstellungen"].Push("Einstellungen2")
-elements["einstellungen2"].Push("Einstellungen1")
 
+Gui, main:add, Button, x1090 y460 h30 w100 gSwitchLabel vEinstellungen1 +Hidden, Einstellungen 1
 Gui, main:add, Text, x230 y110 h30 vActiveMapOverlayDesc +Hidden c%TextColor%, Öffne MapOverlay
 Gui, main:add, Hotkey, x400 y110 h30 vActiveMapOverlayHotkey -VScroll +Hidden, %ActiveMapOverlayHotkey%
+
+Gui, main:add, CheckBox, x230 y160 vSaveHistory Checked%SaveHistory% c%TextColor% +Hidden, Chat protokollieren`, wenn SAMP gestartet wird
+
 elements["einstellungen2"].Push("ActiveMapOverlayHotkey")
 elements["einstellungen2"].Push("ActiveMapOverlayDesc")
+elements["einstellungen2"].Push("Einstellungen1")
+elements["einstellungen2"].Push("SaveHistory")
 
+
+return
+
+StartSAMP:
+IfWinExist, ahk_exe gta_sa.exe
+	return
+LoadIni()
+if(!SAMPPath)
+	return
+if(SaveHistory) {
+	IfNotExist, %A_MyDocuments%\GTA San Andreas User Files\SAMP\History
+		FileCreateDir, %A_MyDocuments%\GTA San Andreas User Files\SAMP\History
+	FileRead, OldChatlog, %chatlogpath%
+	FileGetTime, ChatTime, %chatlogpath%, M
+	FormatTime, ChatMonth,, yyyy.MM
+	ChatTime := RegExReplace(ChatTime, "(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})", "$1.$2.$3 - $4:$5:$6")
+	OldChatlog .= "`n"
+	ChatSplit1 := "=====================================================================================================`n"
+	ChatSplit2 := "================================== Chatlog vom: " ChatTime " ========================================`n"
+	FileAppend, %ChatSplit1%, %A_MyDocuments%\GTA San Andreas User Files\SAMP\History\%ChatMonth%.txt
+	FileAppend, %ChatSplit2%, %A_MyDocuments%\GTA San Andreas User Files\SAMP\History\%ChatMonth%.txt
+	FileAppend, %ChatSplit1%, %A_MyDocuments%\GTA San Andreas User Files\SAMP\History\%ChatMonth%.txt
+	FileAppend, %OldChatlog%, %A_MyDocuments%\GTA San Andreas User Files\SAMP\History\%ChatMonth%.txt
+	OldChatlog := ""
+	}
+RunWait, %SAMPPath% server.nes-newlife.de:7777
+return
+
+SelectSAMP:
+LoadIni()
+FileSelectFile, SAMPPath, S3, A_Desktop, Wähle die SAMP.exe aus, samp.exe
+if(SAMPPath)
+	SaveIni()
 return
 
 Label_ToggleKey:
@@ -608,7 +656,7 @@ return
 Hotkey, Enter, Off
 Hotkey, Escape, Off
 
-+T::
+~+T::
 ~t::
 if(!ForceSuspend)
 	Suspend On
@@ -645,7 +693,7 @@ if(ErrorLevel)
 KBOSend("/mv~/oldmv")
 return
 
-+F::
+~+F::
 ~F::
 if(EnableAPI && IsChatOpen() || EnableAPI && IsDialogOpen() || EnableAPI && IsMenuOpen())
 	return
@@ -689,10 +737,12 @@ if((LSDCounter - LSDIndex) = LSDWarn) {
 		SoundPlay, %SoundInfo%
 }
 if(LSDCounter = LSDIndex-1) {
-	if(EnableAPI && LSDOverlayCreate)
+	if(EnableAPI && LSDOverlayCreate) {
 		KBOSend("/echo Die Nebenwirkung tritt ein!")
-		else
+		} else {
 		SoundPlay, %SoundInfo%
+		}
+	LSDOverlayCreate := 0
 	SetTimer, LSDTime, Off
 	TextDestroy(LSDOverlay)
 	LineDestroy(LSDOverlayLine)
@@ -702,6 +752,7 @@ return
 Settings:
 if(LoginState = "-1")
 	return
+GoSub, HookGTA
 FormatTime, Today,, yyyy.MM.dd
 IniRead, IniDate, %inipath%, Settings, Date, 0
 if(IniDate != Today) {
@@ -709,7 +760,13 @@ if(IniDate != Today) {
 	IniWrite, 0, %inipath%, Kills, TaeglicheKills
 	IniWrite, 0, %inipath%, Kills, TaeglicheDeaths
 	}
-
+if(kGetFlagPos) {
+	FlagPosIndex += 1
+	if(FlagPosIndex >= 22) {
+		FlagPosIndex := 0
+		KBOSend("/GetFlagPos")
+		}
+	}
 if(EnableAPI) {
 	VarIsPlayerDriver := IsPlayerDriver()
 	VarIsPlayerInAnyVehicle := IsPlayerInAnyVehicle()
@@ -722,7 +779,7 @@ if(EnableAPI) {
 		if(AutoEnableLights)
 			StartLights()
 		}
-	
+		
 	if(VarIsPlayerInAnyVehicle) {
 		Carheal := RegExReplace(GetVehicleHealth(), "\.\d+")
 		if(!CarhealOverlayCreated) {
@@ -739,11 +796,12 @@ if(EnableAPI) {
 				TextSetColor(CarhealOverlay, "0xffff0000")
 			}
 		}
+		
 	if(!VarIsPlayerInAnyVehicle && CarhealOverlayCreated) {
 		TextDestroy(CarhealOverlay)
 		CarhealOverlayCreated := 0
 		}
-	
+		
 	if(AutoSwitchGun && VarIsPlayerInAnyVehicle && VarIsPlayerPassenger && !VarGetPlayerWeaponID) {
 		Sleep, 1000
 		if(GetPlayerWeaponID() = 0 && IsVehicleCar() || GetPlayerWeaponID() = 0 && IsVehicleBike()) {
@@ -768,12 +826,6 @@ if(EnableAPI) {
 					sleep, 100
 				}
 			}
-		}
-	if(!ForceSuspend) {
-		if(IsChatOpen() || IsDialogOpen() || IsMenuOpen())
-			Suspend, On
-			else
-			Suspend, Off
 		}
 	}
 return
@@ -819,6 +871,12 @@ if(RegStr(ChatOutput, "INFO: Gib /friedhof ein, um zu sehen wie lange du noch au
 	GesamteDeaths += 1
 	TaeglicheDeaths += 1
 	StreakKills := 0
+	if(EnableAPI) {
+		LSDOverlayCreate := 0
+		SetTimer, LSDTime, Off
+		TextDestroy(LSDOverlay)
+		LineDestroy(LSDOverlayLine)
+		}
 	SaveIni()
 	}
 if(RegStr(ChatOutput, "SERVER: Willkommen ")) {
@@ -827,7 +885,7 @@ if(RegStr(ChatOutput, "SERVER: Willkommen ")) {
 	UserName := Temp[Temp.MaxIndex()]
 	IniWrite, %UserName%, %inipath%, Settings, UserName
 	}
-if(RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Vorsätzlicher Mord ). Reporter: Anonym.") || RegStr(ChatOutput, "SERVER: Du hast gerade einen Mord begangen. Achtung!") || RegStr(ChatOutput, "GANGWAR: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CASINO-EROBERUNG: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CRACKFESTUNG: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Fahrerflucht ). Reporter: Anonym.")) {
+if(RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Vorsätzlicher Mord ). Reporter: Anonym.") || RegStr(ChatOutput, "SERVER: Du hast gerade einen Mord begangen. Achtung!") || RegStr(ChatOutput, "GANGWAR: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CASINO-EROBERUNG: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "CRACKFESTUNG: Du hast einen Feind ausgeschaltet.") || RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Fahrerflucht ). Reporter: Anonym.") || RegStr(ChatOutput, "[" UserName " hat ", "getötet | Grund: Blacklisted]")) {
 	if(!EnableKillbinds)
 		return
 	SaveIni()
@@ -859,7 +917,7 @@ if(RegStr(ChatOutput, "Du hast ein Verbrechen begangen ( Vorsätzlicher Mord ). 
 			RandomKillText := 1
 		
 		if(KillTextCounter != 0)
-			KBOSend(KillTextArray[RandomKillText])
+			KBOSend(KillTextArray[RandomKillText],, 0)
 		
 		}
 	SaveIni()
@@ -907,27 +965,32 @@ if(RegStr(ChatOutput, "Der LSD Rausch ist nun vorbei und die Nebenwirkung tritt 
 
 if(RegStr(ChatOutput, "UNTERGRUND: Das Starten der LSD-Produktion hat den Einfluss deiner Fraktion im Untergrund steigen lassen") && LoginState) {
 	KbOPlayerPos(NewPositions)
-	Fam := BoboRequest(UserName, UserPass, "AddObject", NewPositions[3], NewPositions[4], "1")
+	Fam := BoboRequest(UserName, UserPass, "AddObject", NewPositions[3], NewPositions[4], "1") ;Container anlegen
 	}
-
 if(RegStr(ChatOutput, "INFO: ", "hat eine Hawaiian Green Plantage angelegt.", UserName) && LoginState) {
 	KbOPlayerPos(NewPositions)
-	Fam := BoboRequest(UserName, UserPass, "AddObject", NewPositions[3], NewPositions[4], "2")
+	Fam := BoboRequest(UserName, UserPass, "AddObject", NewPositions[3], NewPositions[4], "2") ;Green anlegen
 	}
-
 if(RegStr(ChatOutput, "INFO: ", "hat eine Acapulco Gold Plantage angelegt.", UserName) && LoginState) {
 	KbOPlayerPos(NewPositions)
-	Fam := BoboRequest(UserName, UserPass, "AddObject", NewPositions[3], NewPositions[4], "3")
+	Fam := BoboRequest(UserName, UserPass, "AddObject", NewPositions[3], NewPositions[4], "3") ;Gold anlegen
 	}
 
 if(RegStr(ChatOutput, "UNTERGRUND: Das Gießen der Plantage hat den Einfluss deiner Fraktion im Untergrund steigen lassen") && LoginState) {
 	KbOPlayerPos(NewPositions)
-	Fam := BoboRequest(UserName, UserPass, "AddCare", NewPositions[3], NewPositions[4], "1")
+	Fam := BoboRequest(UserName, UserPass, "AddCare", NewPositions[3], NewPositions[4], "1") ;Plantage gewässert
 	}
-
 if(RegStr(ChatOutput, "UNTERGRUND: Das Düngen der Plantage hat den Einfluss deiner Fraktion im Untergrund steigen lassen") && LoginState) {
 	KbOPlayerPos(NewPositions)
-	Fam := BoboRequest(UserName, UserPass, "AddCare", NewPositions[3], NewPositions[4], "2")
+	Fam := BoboRequest(UserName, UserPass, "AddCare", NewPositions[3], NewPositions[4], "2") ;Plantage gedüngt
+	}
+if(RegStr(ChatOutput, "LSD: " UserName " hat den Ammoniak in einem der LSD-Labore nachgefüllt.") && LoginState) {
+	KbOPlayerPos(NewPositions)
+	Fam := BoboRequest(UserName, UserPass, "AddCare", NewPositions[3], NewPositions[4], "3") ;Container Ammoniak nachgefüllt
+	}
+if(RegStr(ChatOutput, "LSD: " UserName " hat die Natronlauge in einem der LSD-Labore nachgefüllt.") && LoginState) {
+	KbOPlayerPos(NewPositions)
+	Fam := BoboRequest(UserName, UserPass, "AddCare", NewPositions[3], NewPositions[4], "4") ;Container Natronlauge nachgefüllt
 	}
 if(RegStr(ChatOutput, "ACHTUNG: Dein Fang scheint sich zu wehren, drücke die Tasten um stärker zu ziehen!")) {
 	SoundPlay, %SoundInfo%
@@ -964,14 +1027,6 @@ if(RegStr(ChatOutput, "Momentanes Wantedlevel: ", " | Wantedpunkte: ") && AutoSe
 	Pos := RegExMatch(ChatOutput, "Wantedpunkte: \d+", GotWPs)
 	GotWPs := SubStr(GotWPs, 15)
 	KBOSend("/" vsChat " Habe " GotWPs " Wantedpunkte erhalten in [Zone] ([City])!")
-	}
-if(ReportMatch1) {
-	if(!InStr(ChatOutput, "respawn", 0) && !InStr(ChatOutput, "afk", 0))
-		KBOSend("/a """ ChatOutput """ von " ReportMatch1)
-	ReportMatch1 := ""
-	}
-if(RegStr(ChatOutput, "Der Spieler ", "(ID: ", "hat geschrieben:") && !InStr(ChatOutput, "ReportID")) {
-	Pos := RegExMatch(ChatOutput, "Spieler (.*) \(ID", ReportMatch)
 	}
 if(EnableAPI) {
 	VarIsPlayerDriver := IsPlayerDriver()
@@ -1010,6 +1065,20 @@ if(EnableKillbinds) {
 	} else {
 	KBOSend("/echo Der Killbinder wurde nun {00ff00}aktiviert{ffffff}.")
 	EnableKillbinds := 1
+	}
+Hotkey, enter, on
+return
+
+:?:/kflagpos::
+Suspend, Permit
+Sleep, 200
+FlagPosIndex := 0
+if(kGetFlagPos) {
+	KBOSend("/echo Automatisches /GetFlagPos abgebrochen.")
+	kGetFlagPos := 0
+	} else {
+	KBOSend("/echo Automatisches /GetFlagPos gestartet.~/GetFlagPos")
+	kGetFlagPos := 1
 	}
 Hotkey, enter, on
 return
@@ -1109,6 +1178,8 @@ if(nOverlayPos[1])
 BlockInput, Off
 Hotkey, enter, on
 return
+
+#Include Include/WPBinds.ahk
 
 :?:t/join::
 Suspend, Permit
@@ -1263,12 +1334,6 @@ SendOnlyID := 1
 GoTo, FrakInfo
 return
 
-:?:t/AllFrakData::
-Suspend, Permit
-GetAllFrakData := 1
-GoTo, FrakInfo
-return
-
 :?:t/FrakData::
 Suspend, Permit
 GetAllFrakData := 0
@@ -1288,11 +1353,7 @@ if(!FoundFrak) {
 	return
 	}
 KBOSend("/echo Die Mitglieder der Fraktion " Frak_Name[FoundFrak] " werden geladen...")
-if(GetAllFrakData) {
-	LoadFrakData := BoboRequest(UserName,, "frakinfo",,,,FoundFrak)
-	} else {
-	HomepageFrak(FoundFrak, SendOnlyID)
-	}
+HomepageFrak(FoundFrak, SendOnlyID)
 SendOnlyID := 0
 GetAllFrakData := 0
 Hotkey, enter, on
@@ -1455,6 +1516,8 @@ LoadIni() {
 	if(HotkeyToggle = "ERROR")
 		HotkeyToggle := ""
 	
+	IniRead, SAMPPath, %inipath%, Einstellungen, SAMPPath, 0
+	
 	IniRead, ActivePremium, %inipath%, Einstellungen, ActivePremium, 0
 	IniRead, AutoSwitchGun, %inipath%, Einstellungen, AutoSwitchGun, 0
 	IniRead, VSHotkey, %inipath%, Einstellungen, VSHotkey, ERROR
@@ -1463,7 +1526,9 @@ LoadIni() {
 	IniRead, ActiveMapOverlayHotkey, %inipath%, Einstellungen, ActiveMapOverlayHotkey, ERROR
 	if(ActiveMapOverlayHotkey = "ERROR")
 		ActiveMapOverlayHotkey := ""
-
+	
+	IniRead, SaveHistory, %inipath%, Einstellungen, SaveHistory, 0
+	
 	IniRead, BigMapX, %inipath%, Overlay, BigMapX, 570
 	IniRead, BigMapY, %inipath%, Overlay, BigMapY, 295
 	IniRead, SkinPosX, %inipath%, Overlay, SkinPosX, 770
@@ -1530,11 +1595,15 @@ SaveIni() {
 	
 	IniWrite, %ActionOnLSDText%, %inipath%, Einstellungen, ActionOnLSDText
 	
+	IniWrite, %SAMPPath%, %inipath%, Einstellungen, SAMPPath
+	
 	IniWrite, %HotkeyToggle%, %inipath%, Einstellungen, HotkeyToggle
 	IniWrite, %ActivePremium%, %inipath%, Einstellungen, ActivePremium
 	IniWrite, %AutoSwitchGun%, %inipath%, Einstellungen, AutoSwitchGun
 	IniWrite, %VSHotkey%, %inipath%, Einstellungen, VSHotkey
 	IniWrite, %ActiveMapOverlayHotkey%, %inipath%, Einstellungen, ActiveMapOverlayHotkey
+	
+	IniWrite, %SaveHistory%, %inipath%, Einstellungen, SaveHistory
 	
 	IniWrite, %CarOverlayX%, %inipath%, Overlay, CarOverlayX
 	IniWrite, %CarOverlayY%, %inipath%, Overlay, CarOverlayY
@@ -1696,11 +1765,11 @@ changeTab(tabName:= "killbinds", silent="0") {
 	if(!silent) {
 		StringLower, currentGUILower, currentGUI
 		GuiControl,, Navigation%currentGUI%, img/button_%currentGUILower%.png
-		GuiControl,, Navigation%tabName%, img/button_active%tabName%.png
 		if(currentGUI = "einstellungen2")
 			GuiControl,, NavigationEinstellungen, img/button_einstellungen.png
 		if(currentGUI = "informationen2")
 			GuiControl,, NavigationInformationen, img/button_informationen.png
+		GuiControl,, Navigation%tabName%, img/button_active%tabName%.png
 		}
 	currentGUI:= tabName
 	Loop, 10
@@ -1724,3 +1793,15 @@ font(fontSize:= 10, fontName:= "Times New Roman"){
 sizeScaled:= round(96/A_ScreenDPI*fontSize)
 Gui, main:Font, s%sizeScaled%, %fontName%
 }
+
+HookGTA:
+IfWinNotExist, ahk_exe gta_sa.exe
+	{
+	InitHook := 0
+	return
+	}
+if(InitHook)
+	return
+InitHook := 1
+#Include SAMP_API.ahk
+return
